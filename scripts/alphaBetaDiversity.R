@@ -57,7 +57,7 @@ if(!is.null(subsample)){
 # Format labels
 labelFrmt <- function(x){
   case_when(
-    x == "biotic" ~ "Crab's\ntissues",
+    x == "biotic" ~ "Crab's\norgans",
     x == "abiotic" ~ "Environmental\nsamples",
     grepl("\\|", x) ~ "Both",
     T ~ x
@@ -227,7 +227,7 @@ c.all <- c("env", "site") %>%
           facet_grid(. ~ type.y, scales = "free",
                      labeller = labeller(type.y = function(x){
                        case_when(
-                         x == "biotic" ~ "Crab's tissues",
+                         x == "biotic" ~ "Crab's organs",
                          T ~ "Environmental samples"
                        )
                      })) +
@@ -492,7 +492,7 @@ table.s5 <- b.disp %>%
   filter(term == "Groups") %>%
   select(-term) %>%
   mutate(type = case_when(
-    type == "biotic" ~ "Crab's tissues",
+    type == "biotic" ~ "Crab's organs",
     type == "abiotic" ~ "Environmental samples",
   )) %>%
   mutate(Effect = case_when(
@@ -594,7 +594,7 @@ table.s4 <- permanova %>%
     T ~ Effect
   )) %>%
   mutate(type = case_when(
-    type == "biotic" ~ "Crab's tissues",
+    type == "biotic" ~ "Crab's organs",
     type == "abiotic" ~ "Environmental samples",
     T ~ "Both"
   )) %>%

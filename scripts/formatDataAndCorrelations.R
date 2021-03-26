@@ -332,7 +332,7 @@ track.back <- track.back %>%
   )) %>%
   group_by(type) %>%
   mutate(type = case_when(
-    type == "biotic" ~ paste0("Crab tissues\n(", length(unique(sample.id)), " samples)"),
+    type == "biotic" ~ paste0("Crab organs\n(", length(unique(sample.id)), " samples)"),
     T ~ paste0("Envrironmental samples\n(", length(unique(sample.id)), " samples)")
   ))
 

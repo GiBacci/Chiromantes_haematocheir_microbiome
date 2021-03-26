@@ -343,7 +343,7 @@ a <- ggplot(data, aes(x = env, y = value)) +
   facet_grid(cluster.lab ~ type, space = "free_x", scales = "free_x",
              labeller = labeller(type = function(x){
                case_when(
-                 x == "biotic" ~ "Crab's tissues",
+                 x == "biotic" ~ "Crab's organs",
                  T ~ "Environmental samples"
                )
              })) +
@@ -452,7 +452,7 @@ a <- ggplot(data, aes(x = env, y = value, fill = cluster.lab)) +
              labeller = labeller(type = function(x){
                case_when(
                  x == "abiotic" ~ "Environmental\nsamples",
-                 x == "biotic" ~ "Crab's\ntissues"
+                 x == "biotic" ~ "Crab's\norgans"
                )
              }, 
              cluster.lab = function(x){
