@@ -118,8 +118,8 @@ figure.6
 # Tables
 
 ```{r Table_1, results='asis'}
-table.1 <- read_csv2("Tables/Table_1.csv")
 pander::pander(table.1, missing = "")
+write_excel_csv(table.1, "Tables/Table_1.csv")
 ```
 
 
