@@ -14,8 +14,8 @@ table.path <- "Tables/"
 knitr::opts_chunk$set(echo = FALSE, 
                       warning = FALSE,
                       message = FALSE,
-                      dev = "png",
-                      dpi=600,
+                      dev = "pdf",
+                      # dpi=600,
                       fig.path=fig.path)
 ```
 
@@ -131,11 +131,11 @@ __Table 1: Mean differences between extrapolated diversity and observed diversit
 
 # Supplementary Figures
 
-```{r Figure_S1, fig.width=4.7, fig.height=4.7, fig.cap="__Figure S1: Number of reads retained after each step of the DADA2 workflow.__ The number of reads processed and retained after each step of the DADA2 workflow (x axis) is reported in the y axis. Results obtained from 16S rRNA gene the ITS1 region amplicons were reported in two different panels and divided according to the sample type (crab's tissues or environmental samples). The sample ID of two fungal samples (ITS1 region) which resulted in zero counts after DADA2 pipeline were reported in the plot."}
+```{r Figure_S1, fig.width=4.7, fig.height=4.7, fig.cap="__Figure S1: Number of reads retained after each step of the DADA2 workflow.__ The number of reads processed and retained after each step of the DADA2 workflow (x axis) is reported in the y axis. Results obtained from 16S rRNA gene the ITS1 region amplicons were reported in two different panels and divided according to the sample type (crab's prgans or environmental samples). The sample ID of two fungal samples (ITS1 region) which resulted in zero counts after DADA2 pipeline were reported in the plot."}
 figure.s1
 ```
 
-```{r Figure_S2, fig.width=4, fig.height=4, fig.cap="__Figure S2: Counts of SVs for each replicate in different crab's tissues.__ The abundance of every ASV is reported for the eight pairwise combinations using the log2-scale (2 contrast and four crab's tissues). Colors represent crab's tissues (GI, gills, blue; GO, gonads, green; HG, hindgut, red; MG, midgut, orange) whereas samples were reported using different shades of colors (2 samples per tissue, one darker than the other). Dotted lines represent a perfect correlation (namely a line with slope equal to one and intercept equal to zero) whereas the average value of the Spearman’s correlation coefficient was reported at the top left of each panel."}
+```{r Figure_S2, fig.width=4, fig.height=4, fig.cap="__Figure S2: Counts of SVs for each replicate in different crab's organs.__ The abundance of every ASV is reported for the eight pairwise combinations using the log2-scale (2 contrast and four crab's organs). Colors represent crab's organs (GI, gills, blue; GO, gonads, green; HG, hindgut, red; MG, midgut, orange) whereas samples were reported using different shades of colors (two samples per organ, one darker than the other). Dotted lines represent a perfect correlation (namely a line with slope equal to one and intercept equal to zero) whereas the average value of the Spearman’s correlation coefficient was reported at the top left of each panel."}
 figure.s2
 ```
 
@@ -143,7 +143,7 @@ figure.s2
 figure.s3
 ```
 
-```{r Figure_S4, fig.width=3.95, fig.height=5.83, fig.cap="__Figure S4: Microbial distribution according to Bray-Curtis distance.__ a) Principal coordinates analyses on Bray-Curtis distances inferred form 16S rRNA and ITS1 metabarcoding. Environmental samples and crab’s tissues (top side of the panels) were reported separately as distribution obtained with the two markers reported (right side of each panel). Solid-colored points represent different samples whereas white-filled points represent centroids. The variance of the objects along each axis has been reported between squared brackets (from the lowest to the highest) and different sample types were reported using different colors (TKP, To Kwa Peng; SK, Sai Keng; SH, Shui Hau). b) Permutational analysis of variance on ordinations reported in panel a. For each pair of tissues and environmental samples a permutational analysis of variance was performed. R-squared values of significant contrasts were reported for both 16S (upper triangle) and ITS (lower triangle) counts."}
+```{r Figure_S4, fig.width=3.95, fig.height=5.83, fig.cap="__Figure S4: Microbial distribution according to Bray-Curtis distance.__ a) Principal coordinates analyses on Bray-Curtis distances inferred form 16S rRNA and ITS1 metabarcoding. Environmental samples and crab’s organs (top side of the panels) were reported separately as distribution obtained with the two markers reported (right side of each panel). Solid-colored points represent different samples whereas white-filled points represent centroids. The variance of the objects along each axis has been reported between squared brackets (from the lowest to the highest) and different sample types were reported using different colors (TKP, To Kwa Peng; SK, Sai Keng; SH, Shui Hau). b) Permutational analysis of variance on ordinations reported in panel a. For each pair of organs and environmental samples a permutational analysis of variance was performed. R-squared values of significant contrasts were reported for both 16S (upper triangle) and ITS (lower triangle) counts."}
 figure.s4
 ```
 
@@ -155,27 +155,26 @@ figure.s5
 figure.s6
 ```
 
-```{r Figure_S7, fig.width=4.73, fig.height=5.9, fig.cap="__Figure S7: Differences across sample types in the four clusters detected with divisive hierarchical clustering.__ a) The abundance values of all ASVs included in clusters was reported using the box and whisker visualization where: the interquantile range (IQR, the space between Q~3~ and Q~1~) is represented by the \"box\", the \"whiskers\" extend to the most extreme data point which is no more than 1.5 times the IQR away from the box, and the median (Q~2~) is reported with a black horizontal line. Outliers, namely those observations exceeding 1.5 times the IQR, were reported using black dots. Lowercase letters on top of each box represent significant differences across sample types: if two means were significantly different, all letters on top of the two boxes must be different; if two means were equal, at least one letter must be the same. Crab's tissues and environmental samples were reported in two different panels (vertically) but all pairwise contrasts were included in the analysis. b) Adjusted p-values between pairwise contrasts. All contrasts were tested using Wilcoxon signed-rank test and results were reported as an heatmap where red and blue cells represent two levels of significance (p < 0.01 and p < 0.05, respectively) whereas gray cells indicate non statistical significance (p > 0.05)."}
+```{r Figure_S7, fig.width=4.73, fig.height=5.9, fig.cap="__Figure S7: Differences across sample types in the four clusters detected with divisive hierarchical clustering.__ a) The abundance values of all ASVs included in clusters was reported using the box and whisker visualization where: the interquantile range (IQR, the space between Q~3~ and Q~1~) is represented by the \"box\", the \"whiskers\" extend to the most extreme data point which is no more than 1.5 times the IQR away from the box, and the median (Q~2~) is reported with a black horizontal line. Outliers, namely those observations exceeding 1.5 times the IQR, were reported using black dots. Lowercase letters on top of each box represent significant differences across sample types: if two means were significantly different, all letters on top of the two boxes must be different; if two means were equal, at least one letter must be the same. Crab's organs and environmental samples were reported in two different panels (vertically) but all pairwise contrasts were included in the analysis. b) Adjusted p-values between pairwise contrasts. All contrasts were tested using Wilcoxon signed-rank test and results were reported as an heatmap where red and blue cells represent two levels of significance (p < 0.01 and p < 0.05, respectively) whereas gray cells indicate non statistical significance (p > 0.05)."}
 figure.s7
 ```
-
 
 # Supplementary Tables
 
 ::: {custom-style="Compact"}
-__Table S1: Number of samples sequenced for 16S rRNA gene and ITS1 region.__ Column one reported the sample id of each condition whereas column two reported the biological matrix sampled (MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris). The sampling site was reported in column three together with the crab's number (reported in column four). Samples with the same crab's number within the same sample site are sample coming from the same specimen (experimental unit)--this information was not reported for environmental samples which, in this study, did not share a common experimental unit. The number of sample sequenced was reported in column five and four for 16S rRNA and ITS1 amplicons, respectively. The last column of the table identifies the technical replicates used for ITS1 validation.
+__Table S1: Number of samples sequenced for 16S rRNA gene and ITS1 region.__ Column one reported the sample id of each condition whereas column two reported the biological matrix sampled (MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris). The sampling site was reported in column three together with the crab's number (reported in column four). Samples with the same crab's number within the same sample site are sample coming from the same specimen (experimental unit)--this information was not reported for environmental samples which, in this study, did not share a common experimental unit. The number of sample sequenced was reported in column five and six for 16S rRNA and ITS1 amplicons, respectively. The last column of the table identifies the technical replicates used for ITS1 validation.
 :::
 
 <br>
 <br>
 
 ::: {custom-style="Compact"}
-__Table S2: Accuracy and correlation between replicates.__ Sample ID were reported in the first column whereas crab's tissues were reported in the second one. The number of fungal ASVs detected in all tissues was reported in the "N" column. Spearman’s rank correlation coefficient was reported in the $\rho$ column whereas accuracy was reported in the last column of the table. Other columns report values used to calculate the accuracy as reported in the "Fungal amplicon sequence variant evaluation" section.
+__Table S2: Accuracy and correlation between replicates.__ Sample IDs were reported in the first column whereas crab's organs were reported in the second one. The number of fungal ASVs detected in all organs (GI, gills; GO, gonads; HG and MG, hind- and midgut) was reported in the "N" column. Spearman’s rank correlation coefficient was reported in the $\rho$ column whereas accuracy was reported in the last column of the table. Other columns report values used to calculate the accuracy as explained in the "Fungal amplicon sequence variant evaluation" section.
 :::
 
 ```{r Table_S2, results='asis'}
 table.s2 <- rhos
-colnames(table.s2) <- c("Sample ID", "Tissue", "N", "$\\rho$", "TP", "TN", "FP + FN", "Accuracy")
+colnames(table.s2) <- c("Sample ID", "Organ", "N", "$\\rho$", "TP", "TN", "FP + FN", "Accuracy")
 pander::pander(table.s2, digits = 2)
 # saving table
 write_excel_csv(table.s2, "Tables/Table_S2.csv")
@@ -185,7 +184,7 @@ write_excel_csv(table.s2, "Tables/Table_S2.csv")
 <br>
 
 ::: {custom-style="Compact"}
-__Table S3: Microbial diversity of samples included in the study.__ Microbial diversity was calculated considering counts from both 16S rRNA and ITS1 amplicon sequencing. Sample IDs were reported in the first column (called ID) whereas sample types and sampling sites were reported in the second and the third ones, respectively. The number of ASVs detected in each sample (also known as the "Richness") was reported together with the number of singletons and doubletons detected (defined as the number of ASVs with a count of one and two across all samples, respectively). The last two columns of the table reported the inverse Simpson index and the Good's coverage for all samples (for additional information on how these index were computed see "Microbial diversity within and between sample types" section).
+__Table S3: Microbial diversity of samples included in the study.__ Microbial diversity was calculated considering counts from both 16S rRNA and ITS1 amplicon sequencing. Sample IDs were reported in the first column (called ID) whereas sample types and sampling sites were reported in the second and the third ones, respectively. The number of ASVs detected in each sample (also known as the "Richness") was reported together with the number of singletons and doubletons detected (defined as the number of ASVs with a count of one and two across all samples, respectively). The last two columns of the table reported the inverse Simpson index and the Good's coverage for all samples (for additional information on how these indices were computed see "Microbial diversity within and between sample types" section).
 :::
 
 ```{r Table_S3, results='asis'}
