@@ -2,9 +2,7 @@
 title: "Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab"
 author: "Giovanni Bacci^1^\\*, Sara Fratini^1^\\*, Niccolò Meriggi^1^\\*, Christine L. Y. Cheng^2^, Ka Hei Ng^2^, Alessio Iannucci^1^, Alessio Mengoni^1^, Duccio Cavalieri^1^†, Stefano Cannicci^1,2^†"
 date: "^1^ Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy  \n^2^ The Swire Institute of Marine Science and the Division of Ecology and Biodiversity, The University of Hong Kong, Hong Kong, Hong Kong SAR  \n\\* These authors contributed equally to this work  \n† Corresponding author. Email: cannicci@hku.hk (S.C.); duccio.cavalieri@unifi.it (D.C.)"
-output:
-  word_document:
-    reference_docx: styles/manuscript_style_ref.docx
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -14,8 +12,8 @@ table.path <- "Tables/"
 knitr::opts_chunk$set(echo = FALSE, 
                       warning = FALSE,
                       message = FALSE,
-                      dev = "pdf",
-                      # dpi=600,
+                      dev = "png",
+                      dpi=600,
                       fig.path=fig.path)
 ```
 

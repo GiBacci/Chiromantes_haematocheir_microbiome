@@ -55,4 +55,8 @@ Scripts used in the pipeline are reported in the `scripts` folder and launched i
   3. `deseq2Clustering.R` : amplicon sequence variant clustering and likelihood-ratio test
   4. `geneEnrichment.R` : gene enrichemnt in variant clusters
 
+Data coming from other resources are available in the `data` folder:
 
+  - `ec2go.txt` : map file for Enzyme Commission numbers (EC numbers)
+  - `gene_asv_matrix.rds` : abundace of GO terms in all sequence variants detected
+  - `gene_count.rds` : number of copyes for each GO term detected in each cluster
