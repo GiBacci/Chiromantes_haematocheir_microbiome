@@ -33,4 +33,8 @@ The transition to terrestrial environments by formerly aquatic species has occur
 
 ## File description
 
+Microbial counts and taxonomic assignments are stored in `16s` (Bacteria/Archae) and `its` (Fungi) folders:
 
+    - `track_back.tsv` : number of reads retained after each step of analysis
+    - `seqTabs/all_seqtab_nochim.rds` : raw counts
+    - `seqTabs/tax_assignments.rds` : taxonomic assignments
