@@ -1,11 +1,9 @@
 # *Chiromantes haematocheir* microbiome <br/> [![Generic badge](https://img.shields.io/badge/Made_with-R_Markdown-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/github/license/gibacci/Chiromantes_haematocheir_microbiome)](https://shields.io/)
 
-<img src="ACR_01_Color_Imeco_Black.png" width="140" height="79" align="right">
-<img src="COMBOmod_final.png" width="152" height="79" align="right">
+<img src="ACR_01_Color_Imeco_Black.png" width="88" height="50" align="right">
+<img src="COMBOmod_final.png" width="96" height="50" align="right">
 
-This project arises from a collaboration between the University of Florence and the University of Hong Kong strated in 2018
-
-The repository contains all the codes used to generate files and table reported in the work:
+This repository contains all the codes used to generate files and table reported in the work:
 
 Bacci, Fratini, Meriggi et al. (2021) [Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab](https://www.biorxiv.org/content/10.1101/2021.03.30.437674v1) *bioRxiv*
 
