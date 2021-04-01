@@ -5,19 +5,19 @@
 
 This repository contains all the codes used to generate files and table reported in the work:
 
-Bacci, Fratini, Meriggi et al. (2021) [Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab](https://www.biorxiv.org/content/10.1101/2021.03.30.437674v1) *bioRxiv*
+Bacci, Fratini, Meriggi et al. (2021) [Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab](https://www.biorxiv.org/content/10.1101/2021.03.30.437674v2) *bioRxiv*
 
 If you use code from this repo, please cite our paper as follows (BibTex):
 
 ```BibTeX
 @article{Bacci2021.03.30.437674,
-  author = {Bacci, Giovanni and Fratini, Sara and Meriggi, Niccolo and Cheng, Christine L.Y. and Ng, Ka Hei and Iannucci, Alessio and Mengoni, Alessio and Cavalieri, Duccio and Cannicci, Stefano},
+  author = {Bacci, Giovanni and Fratini, Sara and Meriggi, Niccolo and Cheng, Christine L.Y. and Ng, Ka Hei and Pindo, Massimo and Iannucci, Alessio and Mengoni, Alessio and Cavalieri, Duccio and Cannicci, Stefano},
   title = {Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab},
   year = {2021},
   doi = {10.1101/2021.03.30.437674},
   publisher = {Cold Spring Harbor Laboratory},	
-  URL = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674},
-  eprint = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674.full.pdf},
+  URL = {https://www.biorxiv.org/content/early/2021/04/01/2021.03.30.437674},
+  eprint = {https://www.biorxiv.org/content/early/2021/04/01/2021.03.30.437674.full.pdf},
   journal = {bioRxiv}}
 ```
 
@@ -53,6 +53,7 @@ Scripts used in the pipeline are reported in the `scripts` folder and launched i
   1. `formatDataAndCorrelations.R` : raw data format and correlation between fungal replictaes
   2. `alphaBetaDiversity.R` : alpha and beta diversity analyses
   3. `deseq2Clustering.R` : amplicon sequence variant clustering and likelihood-ratio test
+        - `hypergeometricTest.R` : function for hypergeometric test
   4. `geneEnrichment.R` : gene enrichemnt in variant clusters
 
 Data coming from other resources are available in the `data` folder:
@@ -60,3 +61,21 @@ Data coming from other resources are available in the `data` folder:
   - `ec2go.txt` : map file for Enzyme Commission numbers (EC numbers)
   - `gene_asv_matrix.rds` : abundace of GO terms in all sequence variants detected
   - `gene_count.rds` : number of copyes for each GO term detected in each cluster
+
+## Instructions
+
+R Markdown files can be rendered into `pdf` by using the `knitr` plugin integrated into [RStudio](https://rstudio.com/?_ga=2.50552553.1339302526.1611745574-1183453795.1578408315). Alternatively, one can directly render documents from terminal by launching this command:
+
+```shell
+R -e "rmarkdown::render('<RMarkdown_file>',output_file='<output_file>')"
+```
+
+by replacing `<RMarkdown_file>` with the name of the file to render and `<output_file>` with the name of the output file that will be generated.
+
+It is important to note that the `pdf` documents are generated using `pandoc` package integrated with RStudio. In Debian/Linux systems the library can be found in `/usr/lib/rstudio/bin/pandoc/` and could differ from the version installed at system level. If, during the rendering of the document with `knitr`, you get a message like:
+
+```
+Error: pandoc version 1.12.3 or higher is required and was not found (see the help page ?rmarkdown::pandoc_available).
+```
+
+then you probably need to tell `R` where the `pandoc` library integrated with RStudio is located in your system. You can do this with the command `Sys.setenv(RSTUDIO_PANDOC='/usr/lib/rstudio/bin/pandoc/')` or by using the two build scripts provided together with the R Markdown files.
