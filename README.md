@@ -1,8 +1,7 @@
 # *Chiromantes haematocheir* microbiome <br/> [![Generic badge](https://img.shields.io/badge/Made_with-R_Markdown-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/github/license/gibacci/Chiromantes_haematocheir_microbiome)](https://shields.io/)
 
-<img alt="Logo of Imeco" src="ACR_01_Color_Imeco_Black.png" width="140" height="79" align="right"> 
-<br>
-<img alt="Logo of Combo" src="https://avatars.githubusercontent.com/u/1318879?s=200&v=4" width="140" height="90" align="right">
+<img src="ACR_01_Color_Imeco_Black.png" width="140" height="79" align="right"> 
+<img src="COMBOmod_final.png" width="152" height="79" align="right">
 
 This repository contains all the codes used to generate files and table reported in the work:
 
@@ -20,8 +19,7 @@ If you use code from this repo, please cite our paper as follows (BibTex):
 	publisher = {Cold Spring Harbor Laboratory},	
 	URL = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674},
 	eprint = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674.full.pdf},
-	journal = {bioRxiv}
-}
+	journal = {bioRxiv}}
 ```
 
 The main objective of this project is to unveil the evolutionary role of associated and/or symbiotic bacteria and fungi in the successful conquest of land by crabs and, ultimately, to share light on the importance of such association/symbioses for the evolution of terrestrial habits by animals in general. Additional information about all people and institutions involved in this work can be found here:
