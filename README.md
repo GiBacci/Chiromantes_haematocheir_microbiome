@@ -35,6 +35,24 @@ The transition to terrestrial environments by formerly aquatic species has occur
 
 Microbial counts and taxonomic assignments are stored in `16s` (Bacteria/Archae) and `its` (Fungi) folders:
 
-    - `track_back.tsv` : number of reads retained after each step of analysis
-    - `seqTabs/all_seqtab_nochim.rds` : raw counts
-    - `seqTabs/tax_assignments.rds` : taxonomic assignments
+  - `track_back.tsv` : number of reads retained after each step of analysis
+  - `seqTabs/all_seqtab_nochim.rds` : raw microbial counts
+  - `seqTabs/tax_assignments.rds` : taxonomic classification of amplicon sequence variants detected
+
+All figures and tables included in the paper are saved in the `Figures` and `Tables` folder, with the following modifications:
+
+  - Figure 1: this map was manually created and it can not be reproduced within the R environment. A copy of the image is provided in the `Figures` folder
+  - Figure 5: stripes were manually added and are not automatically generated
+  - Figure 6: venn diagrams were manually aligned to the panels
+  - Table S1: the table was manually compiled. A copy of the file is provided in the `Tables` foder
+
+Files generated during the analysis are saved in the `outputs` folder. To repeat one or more steps simply delete output files and launch the pipeline again.
+
+Scripts used in the pipeline are reported in the `scripts` folder and launched in the following order:
+
+  1. `formatDataAndCorrelations.R` : raw data format and correlation between fungal replictaes
+  2. `alphaBetaDiversity.R` : alpha and beta diversity analyses
+  3. `deseq2Clustering.R` : amplicon sequence variant clustering and likelihood-ratio test
+  4. `geneEnrichment.R` : gene enrichemnt in variant clusters
+
+
