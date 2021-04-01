@@ -53,7 +53,8 @@ Scripts used in the pipeline are reported in the `scripts` folder and launched i
   1. `formatDataAndCorrelations.R` : raw data format and correlation between fungal replictaes
   2. `alphaBetaDiversity.R` : alpha and beta diversity analyses
   3. `deseq2Clustering.R` : amplicon sequence variant clustering and likelihood-ratio test
-        - `hypergeometricTest.R` : function for hypergeometric test
+    - `hypergeometricTest.R` : hypergeometric test used for variant enrichment
+    - `sunburstPlot.R` : sunburst plot generation
   4. `geneEnrichment.R` : gene enrichemnt in variant clusters
 
 Data coming from other resources are available in the `data` folder:
