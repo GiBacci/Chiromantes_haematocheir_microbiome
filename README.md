@@ -1,6 +1,6 @@
-# *Chiromantes haematocheir* microbiome  \n[![Generic badge](https://img.shields.io/badge/Made_with-R_Markdown-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/github/license/gibacci/Chiromantes_haematocheir_microbiome)](https://shields.io/)
+# *Chiromantes haematocheir* microbiome <br/> [![Generic badge](https://img.shields.io/badge/Made_with-R_Markdown-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/github/license/gibacci/Chiromantes_haematocheir_microbiome)](https://shields.io/)
 
-<img alt="Logo of Imeco" src="ACR_01_Color_Imeco_Black.png" width="140" height="79" align="right">
+<img alt="Logo of Imeco" src="ACR_01_Color_Imeco_Black.png" width="140" height="79" align="right">  <br/>
 <img alt="Logo of Combo" src="https://avatars.githubusercontent.com/u/1318879?s=200&v=4" width="140" height="90" align="right">
 
 This repository contains all the codes used to generate files and table reported in the work:
