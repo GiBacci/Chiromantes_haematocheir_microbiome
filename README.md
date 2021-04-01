@@ -1,7 +1,7 @@
 # *Chiromantes haematocheir* microbiome <br/> [![Generic badge](https://img.shields.io/badge/Made_with-R_Markdown-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/github/license/gibacci/Chiromantes_haematocheir_microbiome)](https://shields.io/)
 
-<img src="ACR_01_Color_Imeco_Black.png" width="88" height="50" align="right">
-<img src="COMBOmod_final.png" width="96" height="50" align="right">
+<img src="ACR_01_Color_Imeco_Black.png" width="106" height="60" align="right">
+<img src="COMBOmod_final.png" width="115" height="60" align="right">
 
 This repository contains all the codes used to generate files and table reported in the work:
 
