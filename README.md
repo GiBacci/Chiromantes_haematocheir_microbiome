@@ -9,17 +9,16 @@ Bacci, Fratini, Meriggi et al. (2021) [Organ-specific microbiota enhances the te
 
 If you use code from this repo, please cite our paper as follows (BibTex):
 
-```latex
-@article {Bacci2021.03.30.437674,
-	author = {Bacci, Giovanni and Fratini, Sara and Meriggi, Niccolo and Cheng, Christine L.Y. and Ng, Ka Hei and Iannucci, Alessio and Mengoni, Alessio and Cavalieri, Duccio and Cannicci, Stefano},
-	title = {Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab},
-	elocation-id = {2021.03.30.437674},
-	year = {2021},
-	doi = {10.1101/2021.03.30.437674},
-	publisher = {Cold Spring Harbor Laboratory},	
-	URL = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674},
-	eprint = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674.full.pdf},
-	journal = {bioRxiv}}
+```BibTeX
+@article{Bacci2021.03.30.437674,
+  author = {Bacci, Giovanni and Fratini, Sara and Meriggi, Niccolo and Cheng, Christine L.Y. and Ng, Ka Hei and Iannucci, Alessio and Mengoni, Alessio and Cavalieri, Duccio and Cannicci, Stefano},
+  title = {Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab},
+  year = {2021},
+  doi = {10.1101/2021.03.30.437674},
+  publisher = {Cold Spring Harbor Laboratory},	
+  URL = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674},
+  eprint = {https://www.biorxiv.org/content/early/2021/03/31/2021.03.30.437674.full.pdf},
+  journal = {bioRxiv}}
 ```
 
 The main objective of this project is to unveil the evolutionary role of associated and/or symbiotic bacteria and fungi in the successful conquest of land by crabs and, ultimately, to share light on the importance of such association/symbioses for the evolution of terrestrial habits by animals in general. Additional information about all people and institutions involved in this work can be found here:
