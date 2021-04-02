@@ -35,7 +35,7 @@ The transition to terrestrial environments by formerly aquatic species has occur
 
 ## File description
 
-Microbial counts and taxonomic assignments are stored in `16s` (Bacteria/Archae) and `its` (Fungi) folders:
+Microbial counts and taxonomic assignments are stored in `16s` (Bacteria/Archaea) and `its` (Fungi) folders:
 
   - `track_back.tsv` : number of reads retained after each step of analysis.
   - `seqTabs/all_seqtab_nochim.rds` : raw microbial counts.
@@ -46,7 +46,7 @@ All figures and tables included in the paper are saved in the `Figures` and `Tab
   - Figure 1: this map was manually created and it can not be reproduced within the R environment. A copy of the image is provided in the `Figures` folder.
   - Figure 5: stripes were manually added and are not automatically generated.
   - Figure 6: venn diagrams were manually aligned to the panels.
-  - Table S1: the table was manually compiled. A copy of the file is provided in the `Tables` foder.
+  - Table S1: the table was manually compiled. A copy of the file is provided in the `Tables` folder.
 
 Files generated during the analysis are saved in the `outputs` folder. To repeat one or more steps simply delete output files and launch the pipeline again.
 
@@ -57,13 +57,13 @@ Scripts used are reported in the `scripts` folder and launched in the following 
   3. `deseq2Clustering.R` : amplicon sequence variant clustering and likelihood-ratio test.
       - `hypergeometricTest.R` : hypergeometric test used for variant enrichment.
       - `sunburstPlot.R` : sunburst plot generation.
-  4. `geneEnrichment.R` : gene enrichemnt in variant clusters.
+  4. `geneEnrichment.R` : gene enrichment in variant clusters.
 
 Data coming from other resources are available in the `data` folder:
 
   - `ec2go.txt` : map file for Enzyme Commission numbers (EC numbers).
-  - `gene_asv_matrix.rds` : abundace of GO terms in all sequence variants detected.
-  - `gene_count.rds` : number of copyes for each GO term detected in each cluster.
+  - `gene_asv_matrix.rds` : abundance of GO terms in all sequence variants detected.
+  - `gene_count.rds` : number of copies for each GO term detected in each cluster.
 
 ## Instructions
 
