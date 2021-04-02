@@ -79,4 +79,8 @@ It is important to note that `pdf` documents are generated using `pandoc` packag
 Error: pandoc version 1.XY.Z or higher is required and was not found (see the help page ?rmarkdown::pandoc_available).
 ```
 
-then you probably need to tell `R` where the `pandoc` library integrated with RStudio is located in your system. You can do this with the command: `Sys.setenv(RSTUDIO_PANDOC='/usr/lib/rstudio/bin/pandoc/')`.
+then you probably need to tell `R` where the `pandoc` library integrated with RStudio is located in your system. You can do this with the command: 
+
+```shell
+R -e "Sys.setenv(RSTUDIO_PANDOC='/usr/lib/rstudio/bin/pandoc/'); rmarkdown::render('report.Rmd', output_file='report.pdf')"
+```
