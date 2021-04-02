@@ -27,6 +27,8 @@ The main objective of this project is to unveil the evolutionary role of associa
 2. [Duccio Cavalieri's home page](https://www.unifi.it/p-doc2-2015-0-A-2b333d2e342d-0.html)
 3. [Florence Computational Biology Group](https://github.com/combogenomics)
 
+Sequences were deposited in the European Nucleotide Archive (ENA) under the accession [PRJEB43930](https://www.ebi.ac.uk/ena/browser/view/PRJEB43930).
+
 ## Project abstract
 
 The transition to terrestrial environments by formerly aquatic species has occurred repeatedly in all animal groups and lead to the vast biodiversity of terrestrial forms that we are observing nowadays. The differences between aquatic and terrestrial habitats are enormous and nearly every facet of life was altered to cope with the water-to-land transition. In morphological and physiological terms, animals belonging to rather different and unrelated taxa are known to share very similar adaptations to land, but nothing is known about the critical role of commensal and symbiotic microbiota in such transition. The holobiont theory of evolution indicates that evolution acts on both the genes of the host and of the commensal microbiota, termed microbiome. Terrestrial crabs are a perfect model to study the evolutionary pathways and the ecological role of animal-microbiome symbioses (the so called symbiomes), since the evolution of crabs towards the conquest of terrestrial environments is happening right now through a number of non-related groups.
@@ -35,48 +37,46 @@ The transition to terrestrial environments by formerly aquatic species has occur
 
 Microbial counts and taxonomic assignments are stored in `16s` (Bacteria/Archae) and `its` (Fungi) folders:
 
-  - `track_back.tsv` : number of reads retained after each step of analysis
-  - `seqTabs/all_seqtab_nochim.rds` : raw microbial counts
-  - `seqTabs/tax_assignments.rds` : taxonomic classification of amplicon sequence variants detected
+  - `track_back.tsv` : number of reads retained after each step of analysis.
+  - `seqTabs/all_seqtab_nochim.rds` : raw microbial counts.
+  - `seqTabs/tax_assignments.rds` : taxonomic classification of amplicon sequence variants detected.
 
 All figures and tables included in the paper are saved in the `Figures` and `Tables` folder, with the following modifications:
 
-  - Figure 1: this map was manually created and it can not be reproduced within the R environment. A copy of the image is provided in the `Figures` folder
-  - Figure 5: stripes were manually added and are not automatically generated
-  - Figure 6: venn diagrams were manually aligned to the panels
-  - Table S1: the table was manually compiled. A copy of the file is provided in the `Tables` foder
+  - Figure 1: this map was manually created and it can not be reproduced within the R environment. A copy of the image is provided in the `Figures` folder.
+  - Figure 5: stripes were manually added and are not automatically generated.
+  - Figure 6: venn diagrams were manually aligned to the panels.
+  - Table S1: the table was manually compiled. A copy of the file is provided in the `Tables` foder.
 
 Files generated during the analysis are saved in the `outputs` folder. To repeat one or more steps simply delete output files and launch the pipeline again.
 
-Scripts used in the pipeline are reported in the `scripts` folder and launched in the following order:
+Scripts used are reported in the `scripts` folder and launched in the following order:
 
-  1. `formatDataAndCorrelations.R` : raw data format and correlation between fungal replictaes
-  2. `alphaBetaDiversity.R` : alpha and beta diversity analyses
-  3. `deseq2Clustering.R` : amplicon sequence variant clustering and likelihood-ratio test
-      - `hypergeometricTest.R` : hypergeometric test used for variant enrichment
-      - `sunburstPlot.R` : sunburst plot generation
-  4. `geneEnrichment.R` : gene enrichemnt in variant clusters
+  1. `formatDataAndCorrelations.R` : raw data format and correlation between fungal replicates.
+  2. `alphaBetaDiversity.R` : alpha and beta diversity analyses.
+  3. `deseq2Clustering.R` : amplicon sequence variant clustering and likelihood-ratio test.
+      - `hypergeometricTest.R` : hypergeometric test used for variant enrichment.
+      - `sunburstPlot.R` : sunburst plot generation.
+  4. `geneEnrichment.R` : gene enrichemnt in variant clusters.
 
 Data coming from other resources are available in the `data` folder:
 
-  - `ec2go.txt` : map file for Enzyme Commission numbers (EC numbers)
-  - `gene_asv_matrix.rds` : abundace of GO terms in all sequence variants detected
-  - `gene_count.rds` : number of copyes for each GO term detected in each cluster
+  - `ec2go.txt` : map file for Enzyme Commission numbers (EC numbers).
+  - `gene_asv_matrix.rds` : abundace of GO terms in all sequence variants detected.
+  - `gene_count.rds` : number of copyes for each GO term detected in each cluster.
 
 ## Instructions
 
-R Markdown files can be rendered into `pdf` by using the `knitr` plugin integrated into [RStudio](https://rstudio.com/?_ga=2.50552553.1339302526.1611745574-1183453795.1578408315). Alternatively, one can directly render documents from terminal by launching this command:
+The file `report.Rmd` can be rendered into `pdf` by using the `knitr` plugin integrated into [RStudio](https://rstudio.com/?_ga=2.50552553.1339302526.1611745574-1183453795.1578408315). Alternatively, one can directly render documents from terminal by launching this command:
 
 ```shell
-R -e "rmarkdown::render('<RMarkdown_file>',output_file='<output_file>')"
+R -e "rmarkdown::render('report.Rmd', output_file='report.pdf')"
 ```
 
-by replacing `<RMarkdown_file>` with the name of the file to render and `<output_file>` with the name of the output file that will be generated.
-
-It is important to note that the `pdf` documents are generated using `pandoc` package integrated with RStudio. In Debian/Linux systems the library can be found in `/usr/lib/rstudio/bin/pandoc/` and could differ from the version installed at system level. If, during the rendering of the document with `knitr`, you get a message like:
+It is important to note that `pdf` documents are generated using `pandoc` package integrated in RStudio. In Debian/Linux systems the library is usually in `/usr/lib/rstudio/bin/pandoc/` and could differ from the version installed at system level. If during the rendering you get a message like:
 
 ```
-Error: pandoc version 1.12.3 or higher is required and was not found (see the help page ?rmarkdown::pandoc_available).
+Error: pandoc version 1.XY.Z or higher is required and was not found (see the help page ?rmarkdown::pandoc_available).
 ```
 
-then you probably need to tell `R` where the `pandoc` library integrated with RStudio is located in your system. You can do this with the command `Sys.setenv(RSTUDIO_PANDOC='/usr/lib/rstudio/bin/pandoc/')` or by using the two build scripts provided together with the R Markdown files.
+then you probably need to tell `R` where the `pandoc` library integrated with RStudio is located in your system. You can do this with the command: `Sys.setenv(RSTUDIO_PANDOC='/usr/lib/rstudio/bin/pandoc/')`.
