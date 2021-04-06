@@ -7,7 +7,7 @@ This repository contains all the codes used to generate files and table reported
 
 Bacci, Fratini, Meriggi et al. (2021) [Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab](https://www.biorxiv.org/content/10.1101/2021.03.30.437674v2) *bioRxiv*
 
-If you use code from this repo, please cite our paper as follows (BibTex):
+If you use code or data from this repository, please cite our paper as follows (BibTex):
 
 ```BibTeX
 @article{Bacci2021.03.30.437674,
@@ -48,7 +48,7 @@ All figures and tables included in the paper are saved in the `Figures` and `Tab
   - Figure 6: venn diagrams were manually aligned to the panels.
   - Table S1: the table was manually compiled. A copy of the file is provided in the `Tables` folder.
 
-Files generated during the analysis are saved in the `outputs` folder. To repeat one or more steps simply delete output files and launch the pipeline again.
+Files generated during the analysis are saved in the `output` folder. To repeat one or more steps simply delete output files and launch the pipeline again.
 
 Scripts used are reported in the `scripts` folder and launched in the following order:
 
@@ -67,13 +67,13 @@ Data coming from other resources are available in the `data` folder:
 
 ## Instructions
 
-The file `report.Rmd` can be rendered into `pdf` by using the `knitr` plugin integrated into [RStudio](https://rstudio.com/?_ga=2.50552553.1339302526.1611745574-1183453795.1578408315). Alternatively, one can directly render documents from terminal by launching this command:
+The file `report.Rmd` can be rendered into `html` by using the `knitr` plugin integrated into [RStudio](https://rstudio.com/?_ga=2.50552553.1339302526.1611745574-1183453795.1578408315). Alternatively, one can directly render documents from terminal by launching this command:
 
 ```shell
-R -e "rmarkdown::render('report.Rmd', output_file='report.pdf')"
+R -e "rmarkdown::render('report.Rmd', output_file='report.html')"
 ```
 
-It is important to note that `pdf` documents are generated using `pandoc` package integrated in RStudio. In Debian/Linux systems the library is usually in `/usr/lib/rstudio/bin/pandoc/` and could differ from the version installed at system level. If during the rendering you get a message like:
+It is important to note that `html` documents are generated using `pandoc` package integrated in RStudio. In Debian/Linux systems the library is usually in `/usr/lib/rstudio/bin/pandoc/` and could differ from the version installed at system level. If during the rendering you get a message like:
 
 ```
 Error: pandoc version 1.XY.Z or higher is required and was not found (see the help page ?rmarkdown::pandoc_available).
@@ -82,5 +82,5 @@ Error: pandoc version 1.XY.Z or higher is required and was not found (see the he
 then you probably need to tell `R` where the `pandoc` library integrated with RStudio is located in your system. You can do this with the command: 
 
 ```shell
-R -e "Sys.setenv(RSTUDIO_PANDOC='/usr/lib/rstudio/bin/pandoc/'); rmarkdown::render('report.Rmd', output_file='report.pdf')"
+R -e "Sys.setenv(RSTUDIO_PANDOC='/usr/lib/rstudio/bin/pandoc/'); rmarkdown::render('report.Rmd', output_file='report.html')"
 ```
