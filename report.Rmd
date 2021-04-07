@@ -2,46 +2,56 @@
 title: "Organ-specific microbiota enhances the terrestrial lifestyle of a brachyuran crab"
 author:
   - first_name: "Giovanni"
-    last_name: "Bacci"
-    affiliation: "Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy"
+    last_name: "Bacci*"
+    affiliation: "University of Florence<sup>1</sup>"
     orcid_id: 0000-0003-4406-7816
   - first_name: "Sara"
-    last_name: "Fratini"
-    affiliation: "Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy"
+    last_name: "Fratini*"
+    affiliation: "University of Florence<sup>1</sup>"
     orcid_id: 0000-0002-5754-8830
   - first_name: "Niccolò"
-    last_name: "Meriggi"
-    affiliation: "Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy"
+    last_name: "Meriggi*"
+    affiliation: "University of Florence<sup>1</sup>"
     orcid_id: 0000-0002-6908-2169
   - first_name: "Christine L.Y."
     last_name: "Cheng"
-    affiliation: "The Swire Institute of Marine Science and the Division of Ecology and Biodiversity, The University of Hong Kong, Hong Kong, Hong Kong SAR"
+    affiliation: "University of Hong Kong<sup>2</sup>"
   - first_name: "Ka Hei"
     last_name: "Ng"
-    affiliation: "The Swire Institute of Marine Science and the Division of Ecology and Biodiversity, The University of Hong Kong, Hong Kong, Hong Kong SAR"
+    affiliation: "University of Hong Kong<sup>2</sup>"
   - first_name: "Massimo"
     last_name: "Pindo"
-    affiliation: "Research and Innovation Centre, Fondazione Edmund Mach, San Michele all’Adige, IT38098, Italy"
+    affiliation: "Fondazione Edmund Mach<sup>3</sup>"
   - first_name: "Alessio"
     last_name: "Iannucci"
-    affiliation: "Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy"
+    affiliation: "University of Florence<sup>1</sup>"
     orcid_id: 0000-0001-7729-4412
   - first_name: "Alessio"
     last_name: "Mengoni"
-    affiliation: "Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy"
+    affiliation: "University of Florence<sup>1</sup>"
     orcid_id: 0000-0002-1265-8251
   - first_name: "Duccio"
-    last_name: "Cavalieri"
-    affiliation: "Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy"
+    last_name: "Cavalieri<sup>†</sup>"
+    affiliation: "University of Florence<sup>1</sup>"
     orcid_id: 0000-0001-6426-5719
   - first_name: "Stefano"
-    last_name: "Cannicci"
-    affiliation: "Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy<br>The Swire Institute of Marine Science and the Division of Ecology and Biodiversity, The University of Hong Kong, Hong Kong, Hong Kong SAR"
+    last_name: "Cannicci<sup>†</sup>"
+    affiliation: "University of Florence<sup>1</sup><br>University of Hong Kong<sup>2</sup>"
     orcid_id: 0000-0002-6544-0213
 output: 
  distill::distill_article:
    fig_caption: FALSE
+   theme: styles/theme.css
 ---
+
+:::{.affiliations}
+^1^ Department of Biology, University of Florence, Sesto Fiorentino, IT50019, Italy  
+^2^ The Swire Institute of Marine Science and the Division of Ecology and Biodiversity, The University of Hong Kong, Hong Kong, Hong Kong SAR  
+^3^ Research and Innovation Centre, Fondazione Edmund Mach, San Michele all’Adige, IT38098, Italy
+
+\* These authors contributed equally to this work  
+^†^ Corresponding author. Email: cannicci@hku.hk (S.C.); duccio.cavalieri@unifi.it (D.C.)
+:::
 
 ```{r setup, include=FALSE}
 fig.path <- "Figures/"

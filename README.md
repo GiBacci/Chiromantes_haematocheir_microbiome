@@ -67,7 +67,7 @@ Data coming from other resources are available in the `data` folder:
 
 ## Instructions
 
-The file `report.Rmd` can be rendered into `html` by using the `knitr` plugin integrated into [RStudio](https://rstudio.com/?_ga=2.50552553.1339302526.1611745574-1183453795.1578408315). Alternatively, one can directly render documents from terminal by launching this command:
+This report is generated using the [Distill](https://rstudio.github.io/distill/) package with a custom theme available in the `styles` folder. The file `report.Rmd` can be rendered into `html` by using the `knitr` plugin integrated into [RStudio](https://rstudio.com/?_ga=2.50552553.1339302526.1611745574-1183453795.1578408315). Alternatively, one can directly render documents from terminal by launching this command:
 
 ```shell
 R -e "rmarkdown::render('report.Rmd', output_file='report.html')"

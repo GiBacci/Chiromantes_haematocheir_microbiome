@@ -82,8 +82,16 @@ venn <- sign.go.split %>%
   map("descrfc") %>%
 ggVennDiagram(color = "white", label = "count")
 
+# Detecting geoms
+venn.geoms <- map(venn$layers, "geom") %>%
+  map_chr(function(x) class(x)[1])
+
+poly.layer <- which(venn.geoms == "GeomPolygon")
+text.layer <- which(venn.geoms == "GeomText")
+label.layer <- which(venn.geoms == "GeomLabel")
+
 # Assign mixed colors
-col <- venn$layers[[2]]$data$group %>%
+col <- venn$layers[[poly.layer]]$data$group %>%
   unique() %>%
   set_names() %>%
   strsplit("") %>%
@@ -94,13 +102,14 @@ col <- venn$layers[[2]]$data$group %>%
   unlist()
 
 # Venn diagram customizations
-venn$layers[[1]]$aes_params$size <- 2.8
-venn$layers[[1]]$aes_params$fontface <- "plain"
-venn$layers[[2]]$mapping <- aes(group=group, fill=group)
+venn$layers[[text.layer]]$aes_params$size <- 2.8
+venn$layers[[text.layer]]$aes_params$fontface <- "plain"
 
-venn$layers[[3]]$aes_params$alpha <- 0
-venn$layers[[3]]$aes_params$size <- 2.8
-venn$layers[[2]]$data <- venn$layers[[2]]$data %>%
+venn$layers[[label.layer]]$aes_params$alpha <- 0
+venn$layers[[label.layer]]$aes_params$size <- 2.8
+
+venn$layers[[poly.layer]]$mapping <- aes(group=group, fill=group)
+venn$layers[[poly.layer]]$data <- venn$layers[[2]]$data %>%
   mutate(group = fct_relevel(group, "A", "B", "C"))
 
 # Final plot
@@ -129,7 +138,7 @@ ggplot(aes(x = size, y = group)) +
 
 
 # Get venn groups
-venn.grp <- venn$layers[[2]]$data %>%
+venn.grp <- venn$layers[[poly.layer]]$data %>%
   dplyr::select(group, count) %>%
   unique()
 
@@ -174,7 +183,7 @@ ggplot(aes(x = descrfc, y = y)) +
 
 # Use venn diagram groups as facet label
 venns <- unserialize(serialize(venn, NULL))
-venns$layers <- venns$layers[2]
+venns$layers <- venns$layers[poly.layer]
 venns$layers[[1]]$data <- top_go$data$group %>% 
   map_df(function(l){
     venns$layers[[1]]$data %>%
