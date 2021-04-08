@@ -55,9 +55,13 @@ d-appendix {
   --text-color:      rgba(0, 0, 0, 0.5);
 }
 
-.affiliations {
+div.affiliations {
   font-size:        12px;
   line-height:      13px;
+}
+
+d-article {
+  line-height: 1.2em;
 }
 
 /*-- WEBSITE HEADER + FOOTER --*/
