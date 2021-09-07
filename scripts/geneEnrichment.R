@@ -109,8 +109,8 @@ venn$layers[[label.layer]]$aes_params$alpha <- 0
 venn$layers[[label.layer]]$aes_params$size <- 2.8
 
 venn$layers[[poly.layer]]$mapping <- aes(group=group, fill=group)
-venn$layers[[poly.layer]]$data <- venn$layers[[2]]$data %>%
-  mutate(group = fct_relevel(group, "A", "B", "C"))
+# venn$layers[[poly.layer]]$data <- venn$layers[[2]]$data %>%
+#   mutate(group = fct_relevel(group, "A", "B", "C"))
 
 # Final plot
 venn <- venn + 

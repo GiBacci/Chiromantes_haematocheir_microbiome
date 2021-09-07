@@ -145,6 +145,7 @@ knitr::read_chunk("scripts/geneEnrichment.R")
 # Figures
 
 ```{r Figure_2, fig.width=5, fig.height=4}
+ggsave("Figures/Figure_2.pdf", width = 5, height = 4, useDingbats = F)
 figure.2
 ```
 
@@ -153,6 +154,7 @@ __Figure 2: Microbial diversity in crab’s tissues and environmental samples.__
 <br>
 
 ```{r Figure_3, fig.width=3.95, fig.height=5.83}
+ggsave("Figures/Figure_3.pdf", width = 3.95, height = 5.83, useDingbats = F)
 figure.3
 ```
 
@@ -161,6 +163,7 @@ __Figure 3: Microbial distribution according to Bray-Curtis distance.__ a) Princ
 <br>
 
 ```{r Figure_4, fig.width=3.94, fig.height=5.9}
+ggsave("Figures/Figure_4.pdf", width = 3.94, height = 5.9, useDingbats = F)
 figure.4
 ```
 
@@ -169,6 +172,7 @@ __Figure 4: Sequence variant clustering according to their abundance along sampl
 <br>
 
 ```{r Figure_5, fig.width=7.1, fig.height=7.1}
+ggsave("Figures/Figure_5.pdf", width = 7.1, height = 7.1, useDingbats = F)
 figure.5
 ```
 
@@ -177,6 +181,7 @@ __Figure 5: Taxonomic enrichment in clusters.__ a) Scaled variance-stabilized co
 <br>
 
 ```{r Figure_6, fig.width=5.9, fig.height=7.1}
+ggsave("Figures/Figure_6.pdf", width = 5.9, height = 7.1, useDingbats = F)
 figure.6
 ```
 
@@ -196,6 +201,7 @@ knitr::kable(table.1)
 # Supplementary Figures
 
 ```{r Figure_S1, fig.width=4.7, fig.height=4.7}
+ggsave("Figures/Figure_S1.pdf", width = 4.7, height = 4.7, useDingbats = F)
 figure.s1
 ```
 
@@ -204,6 +210,7 @@ __Figure S1: Number of reads retained after each step of the DADA2 workflow.__ T
 <br>
 
 ```{r Figure_S2, fig.width=4, fig.height=4}
+ggsave("Figures/Figure_S2.pdf", width = 4, height = 4, useDingbats = F)
 figure.s2
 ```
 
@@ -212,6 +219,7 @@ __Figure S2: Counts of SVs for each replicate in different crab's organs.__ The 
 <br>
 
 ```{r Figure_S3, fig.width=3.8, fig.height=3.8}
+ggsave("Figures/Figure_S3.pdf", width = 3.8, height = 3.8, useDingbats = F)
 figure.s3
 ```
 
@@ -220,6 +228,7 @@ __Figure S3: Microbial diversity in different sampling sites.__ The average of t
 <br>
 
 ```{r Figure_S4, fig.width=3.95, fig.height=5.83}
+ggsave("Figures/Figure_S4.pdf", width = 3.95, height = 5.83, useDingbats = F)
 figure.s4
 ```
 
@@ -228,6 +237,7 @@ __Figure S4: Microbial distribution according to Bray-Curtis distance.__ a) Prin
 <br>
 
 ```{r Figure_S5, fig.width=5.9, fig.height=5.9}
+ggsave("Figures/Figure_S5.pdf", width = 5.9, height = 5.9, useDingbats = F)
 figure.s5
 ```
 
@@ -236,6 +246,7 @@ __Figure S5: Number of ASVs shared across sampling sites and sample types.__ The
 <br>
 
 ```{r Figure_S6, fig.width=3.15, fig.height=5.12}
+ggsave("Figures/Figure_S6.pdf", width = 3.15, height = 5.12, useDingbats = F)
 figure.s6
 ```
 
@@ -244,6 +255,7 @@ __Figure S6: DESeq2 model selection based on the median of residuals on the log 
 <br>
 
 ```{r Figure_S7, fig.width=4.73, fig.height=5.9}
+ggsave("Figures/Figure_S7.pdf", width = 4.73, height = 5.9, useDingbats = F)
 figure.s7
 ```
 
