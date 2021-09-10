@@ -10,6 +10,9 @@ suppressPackageStartupMessages({
 })
 source("scripts/utils.R")
 
+# Font family
+f.family <- "sans"
+
 geneCount <- "data/gene_count.rds"
 geneCount <- readRDS(geneCount)
 
@@ -116,7 +119,7 @@ venn$layers[[poly.layer]]$mapping <- aes(group=group, fill=group)
 venn <- venn + 
   scale_fill_manual(values = col) +
   myTheme +
-  theme_void(base_size = 8, base_family = "sans") +
+  theme_void(base_size = 8, base_family = f.family) +
   theme(legend.position = "none")
 
 # Size of clusters (number of unique GO terms)
@@ -127,7 +130,7 @@ bars <- sign.go.split %>%
   enframe("group", "size") %>%
 ggplot(aes(x = size, y = group)) +
   geom_col(aes(fill = group)) +
-  theme_classic(base_size = 8, base_family = "sans") +
+  theme_classic(base_size = 8, base_family = f.family) +
   myTheme +
   scale_x_continuous(expand = expansion(mult = c(0,0.1))) +
   theme(panel.grid.major.y = element_blank(),
@@ -172,7 +175,7 @@ ggplot(aes(x = descrfc, y = y)) +
                 width = .5) +
   geom_col(fill = "steelblue") +
   facet_grid(group ~ ., scales = "free") +
-  theme_bw(base_size = 8, base_family = "sans",
+  theme_bw(base_size = 8, base_family = f.family,
                 base_line_size = .25) +
   coord_flip() +
   scale_y_continuous(expand = expansion(add = c(0, .3))) +
@@ -281,7 +284,7 @@ heatmap_copies <- collapsed %>%
   geom_tile(color = NA) +
   facet_grid(group.go ~ as.factor(group.taxon),
              scales = "free", space = "free") +
-  theme_minimal(base_size = 8, base_family = "sans",
+  theme_minimal(base_size = 8, base_family = f.family,
                 base_line_size = .25) +
   scale_fill_distiller(palette = "RdBu", limit = fill.lim,
                        labels = function(x) abs(as.numeric(x))) +
@@ -354,7 +357,7 @@ fc_bars <- collapsed %>%
   geom_vline(xintercept = 0, size = .25, color = "black") +
   facet_grid(group.go ~ .,
              scales = "free", space = "free") +
-  theme_minimal(base_size = 8, base_family = "sans",
+  theme_minimal(base_size = 8, base_family = f.family,
                 base_line_size = .25) +
   theme(axis.text.y = element_blank(),
         panel.grid.major.y = element_blank(),
@@ -392,7 +395,7 @@ BBBBBBBBCCD
 BBBBBBBBCCD
 BBBBBBBBCCD
 "
-figure.6 <- (venns.main + theme(panel.spacing.x = unit(4, "lines"))) + 
+figure.s8 <- (venns.main + theme(panel.spacing.x = unit(4, "lines"))) + 
   (heatmap_copies + labs(tag = "c")) + 
   (fc_bars + labs(tag = "d")) + 
   (venns + theme(panel.spacing.y = unit(1, "lines"))) +

@@ -554,25 +554,25 @@ plot_pcoa <- function(pcoas, grp){
     summarise(x = range(x),
               y = range(y))
   labs <- sprintf("PCoA%d (%.2f - %.2f%%)", 1:2, variance[1,], variance[2,])
-  ggplot(main.data, aes_string(x = "x", y = "y", color = grp)) +
+  ggplot(main.data, aes_string(x = "x", y = "y", fill = grp)) +
     geom_hline(yintercept = 0, linetype = 3, size = .25) +
     geom_vline(xintercept = 0, linetype = 3, size = .25) +
-    geom_segment(data = spiders, aes(xend = xend, yend = yend),
-                 size = .2, linetype = 1, show.legend = F) +
-    geom_point(size = 1) +
+    # geom_segment(data = spiders, aes(xend = xend, yend = yend),
+    #              size = .2, linetype = 1, show.legend = F) +
+    geom_point(size = 1.2, color = "white", shape = 21, stroke = .3) +
     # geom_label(data=centroids, aes_string(label = grp), size = 2,
     #            label.padding = unit(.1, "lines"), show.legend = F) +
-    geom_point(data=centroids, shape = 21, fill = "white", show.legend = F,
-               size = 1.5, stroke = .2) +
+    # geom_point(data=centroids, shape = 21, fill = "white", show.legend = F,
+    #            size = 1.5, stroke = .2) +
     facet_grid(amplicon ~ type, scales = "free",
                labeller = labeller(amplicon = labelFrmt,
                                    type = labelFrmt)) +
-    scale_color_npg() +
+    scale_fill_npg() +
     theme_bw(base_size = 6, base_family = "sans") +
     theme_publication(grid = F) +
     xlab(labs[1]) +
     ylab(labs[2]) +
-    guides(color = guide_legend(nrow = 1,
+    guides(fill = guide_legend(nrow = 1,
                                 override.aes = list(size = 3))) +
     theme(legend.title = element_blank(),
           panel.spacing.x = unit(1, "lines"),

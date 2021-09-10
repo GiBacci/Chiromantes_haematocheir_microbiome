@@ -230,8 +230,8 @@ figure.4 <- gheatmap(p %<+% group, t(means), color = NA,
                        family = "sans",
                        colnames_angle = 90,
                        hjust = 1) +
-  geom_tippoint(aes(shape = domain, x = x+0.05), size = 1.2, 
-                stroke = .2, show.legend = F) +
+  geom_tippoint(aes(shape = domain, x = x+0.05), size = 1, 
+                stroke = 0, show.legend = F) +
   scale_color_manual(values = col) +
   scale_shape_manual(values = c(NA, 19)) +
   scale_fill_distiller(palette = "RdBu", limits = c(-2.5, 2.5)) +
@@ -516,20 +516,30 @@ data <- tax %>%
   select(-asv)
 
 # Removing taxa without significant enrichment
-extr <- apply(data, 1, function(x) {
-  x <- na.omit(x)
-  any(x %in% pull(enrich, categories))
-})
+data <- enrich %>%
+  select(tax.lvl, categories) %>%
+  unique() %>%
+  apply(1, function(d){
+    col.i <- which(names(data) == d[1])
+    row.i <- data[,col.i] == d[2]
+    res <- data[row.i, 1:col.i]
+    unique(res)
+  }) %>%
+  bind_rows() %>%
+  unique()
+rownames(data) <- NULL
+data <- data[,-1]
+extr <- apply(data, 1, function(x) !all(is.na(x)))
 data <- data[extr,]
 
+# ensuring all taxa were correctly found
+diffs <- setdiff(enrich$categories, na.omit(as.vector(as.matrix(data))))
+if(length(diffs) != 0){
+  print("[WARNING] Enriched taxa were not correctly detected")
+}
 
 # Building sunburst plot
-res.raw <- getSunburstData(data[,-1], collapse = T) %>%
-  # changing some labels
-  mutate(label = str_remove(label, "Allorhizobium-Neorhizobium-Pararhizobium-")) %>%
-  mutate(label = str_remove(label, "Cryptococcus sp XVII ")) %>%
-  mutate(label = str_replace(label, "Incertae Sedis", "I.S.")) %>%
-  mutate(label = str_replace(label, "_Incertae sedis", " I.S."))
+res.raw <- getSunburstData(data, collapse = T)
 
 # Defining cluster colors
 col <- pal_npg()(10)[1:4]
@@ -547,10 +557,18 @@ mixCol <- function(col){
   paste0(res, "FF")
 }
 
+correctLabels <- function(data, label){
+  data %>%
+    mutate(across({{ label }}, str_remove, "Allorhizobium-Neorhizobium-Pararhizobium-")) %>%
+    mutate(across({{ label }}, str_remove, "Cryptococcus sp XVII ")) %>%
+    mutate(across({{ label }}, str_replace, "Incertae Sedis", "i.s.")) %>%
+    mutate(across({{ label }}, str_replace, "_Incertae sedis", " i.s."))
+}
+
 # Adding clusters
 res <- res.raw %>%
   left_join(enrich %>% select(grp, categories), 
-            by = c("label" = "categories"))
+            by = c("label" = "categories")) 
 
 # Interpolate colors if a taxa was
 # enriched in two or more clusters
@@ -576,24 +594,30 @@ lab <- res %>%
 # Get external labels
 lab1 <- res.raw %>% 
   filter(last == T,
-         label %in% lab)
+         label %in% lab) %>%
+  correctLabels(label)
+
 # Get row labels
 lab2 <- res.raw %>%
   filter(xmin == 1,
-         label %in% lab)
+         label %in% lab) %>%
+  correctLabels(label)
+
 # Get labels big enough to be displayed
 bigLabs <- res.raw %>%
   mutate(char.len = nchar(label)) %>%
   filter(ymax - ymin >= char.len - 1,
          xmin > 1,
          last == F,
-         label %in% lab)
+         label %in% lab) %>%
+  correctLabels(label)
 
 lab3 <- res.raw %>%
   filter(xmin > 1,
          last == F,
          label %in% lab,
-         !label %in% pull(bigLabs, label))
+         !label %in% pull(bigLabs, label)) %>%
+  correctLabels(label)
 
 # Final version of plot
 text.size <- 1.8
@@ -605,12 +629,18 @@ ggplot(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax)) +
   geom_rect(aes(fill = lab), color = "white", show.legend = T) +
   polar_labels(lab1, alignment = "perpendicular", size = text.size, show.legend = F) +
   polar_labels(lab2, alignment = "tangent", position = "inside", 
-               size = text.size, show.legend = F) +
+               size = text.size, show.legend = F, use.shadowtext = T,
+               color = "black", bg.colour = "white",
+               fontface = "bold") +
   polar_labels(bigLabs, alignment = "tangent", position = "inside", 
-               size = text.size, show.legend = F) +
+               size = text.size, show.legend = F, use.shadowtext = T,
+               color = "black", bg.colour = "white",
+               fontface = "bold") +
   polar_labels(lab3, alignment = "normal", position = "inside", 
                condensed = T, condensed.legend = T, size = text.size,
-               key_glyph = key_glyph) +
+               key_glyph = key_glyph, use.shadowtext = T,
+               color = "black", bg.colour = "white",
+               fontface = "bold") +
   coord_polar("y", clip = "off") +
   xlim(-1, NA) +
   scale_fill_manual(values = c(col, n.s. = "gray90")) +
@@ -621,9 +651,9 @@ ggplot(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax)) +
         legend.key.width = unit(.5, "lines"),
         legend.key.height = unit(.5, "lines"),
         plot.margin = unit(c(0, 0, 0, 0), "lines")) +
-  guides(fill = guide_legend(title = "Clusters", nrow = 11, override.aes = list(color = NA),
+  guides(fill = guide_legend(title = "Clusters", ncol = 1, override.aes = list(color = NA),
                              title.position = "top"),
-         label = guide_legend(title = NULL, nrow = 11, override.aes = list(fill = "transparent")))
+         label = guide_legend(title = NULL, nrow = 15, override.aes = list(fill = "transparent")))
 
 # Assembling figure 5
 figure.5 <- (a + theme(strip.text.x = element_text(angle = 90, hjust = 0))) + b +

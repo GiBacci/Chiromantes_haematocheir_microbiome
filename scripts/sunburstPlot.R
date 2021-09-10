@@ -41,7 +41,7 @@ getSunburstData <- function(data, bar.width = 1, collapse = F){
     no.na <- na.omit(x)
     last <- no.na[length(no.na)]
     
-    found <- sum(lasts[[which(x == last)]] == last, na.rm = T)
+    found <- sum(lasts[[length(no.na)]] == last, na.rm = T)
     if(found > 1)
       return(NA)
     last
@@ -174,6 +174,7 @@ polar_labels <- function(data,
                          lab.y = "lab.y",
                          condensed = F,
                          condensed.legend = F,
+                         use.shadowtext = F,
                          ...){
   
   # get alignment type and position
@@ -235,13 +236,23 @@ polar_labels <- function(data,
     breaks <- get(label, data)
   }
   
-  res <- geom_text(data = data, 
-                   aes(x = lab.x, 
-                       label = !!ensym(label), 
-                       y = !!ensym(lab.y), 
-                       angle = angle, 
-                       hjust = hjust),
-                   ...)
+  res <- if(use.shadowtext){
+    shadowtext::geom_shadowtext(data = data, 
+              aes(x = lab.x, 
+                  label = !!ensym(label), 
+                  y = !!ensym(lab.y), 
+                  angle = angle, 
+                  hjust = hjust),
+              ...)
+  }else{
+    geom_text(data = data, 
+              aes(x = lab.x, 
+                  label = !!ensym(label), 
+                  y = !!ensym(lab.y), 
+                  angle = angle, 
+                  hjust = hjust),
+              ...)
+  }
   
   if(condensed.legend){
     return(

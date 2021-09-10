@@ -72,62 +72,6 @@ changeLevels <- function(data){
                          "abiotic", "biotic"))
 }
 
-# GGplot theme
-theme_publication <- function(lines = .5, rects = .5, text = 8, ticks.len = 2, legend = 10,
-                              legend.position = "bottom", legend.direction = "horizontal",
-                              grid = T, ticks = T, axis.line = F) {
-  tm <- theme(text = element_text(size = text),
-              plot.title = element_text(face = "bold",
-                                        size = rel(1.2), hjust = 0.5),
-              line = element_line(size = pt2ggSize(lines), lineend = "square"),
-              rect = element_rect(size = pt2ggSize(rects)),
-              
-              # panel.background = element_rect(colour = NA),
-              # plot.background = element_rect(colour = NA),
-              # panel.border = element_rect(colour = NA),
-              
-              axis.title = element_text(size = rel(1)),
-              axis.title.y = element_text(angle=90, vjust = 2, size = rel(1)),
-              axis.title.x = element_text(vjust = -0.2, size = rel(1)),
-              
-              axis.text = element_text(size = rel(1)), 
-              
-              # axis.line = element_line(colour="black"),
-              axis.ticks = if(ticks) element_line() else element_blank(),
-              axis.ticks.length = unit(ticks.len, "pt"),
-              
-              panel.grid.major.x = if(grid == "x" | grid == T) element_line(colour="#f0f0f0") else element_blank(),
-              panel.grid.major.y = if(grid == "y" | grid == T) element_line(colour="#f0f0f0") else element_blank(),
-              panel.grid.minor = element_blank(),
-              
-              legend.key = element_rect(colour = NA),
-              legend.position = legend.position,
-              legend.direction = legend.direction,
-              legend.key.size= unit(legend, "pt"),
-              legend.margin = margin(0, 0, 0, 0, "cm"),
-              
-              legend.title = element_text(face="bold", size = rel(.8)),
-              legend.text = element_text(size = rel(.8)),
-              
-              plot.margin=unit(c(3,2,3,3),"mm"),
-              
-              strip.background=element_blank(),
-              strip.text = element_text(size = rel(1))
-  )
-  
-  if(axis.line){
-    tm + theme(axis.line = element_line(size = pt2ggSize(lines), lineend = "square"))
-  }else{
-    tm
-  }
-}
-
-pt2ggSize <- function(pt) {
-  # The number of points corresponding to size 1 in ggplot
-  magic_number <- 2.14
-  pt/magic_number
-}
-
 
 splitBy <- function(data, sample = NULL, taxa = NULL, both = F, keep.zeroes = F){
   # Splits a phyloseq object into chunks depending on
