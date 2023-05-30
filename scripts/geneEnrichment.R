@@ -45,7 +45,7 @@ sign.go <- go.enrich %>%
 
 
 # Building table S9
-table.s9 <- sign.go %>%
+table.s10 <- sign.go %>%
   mutate(Term = Term(GO),
          Reaction = Definition(GO)) %>%
   arrange(GO)
@@ -67,11 +67,6 @@ mixCol <- function(col){
   paste0(res, "FF")
 }
 
-# Defining base colors (the same used 
-# throughout the paper)
-col <- ggsci::pal_npg()(10)[1:3]
-names(col) <- LETTERS[1:3]
-
 # Splitting dataset based on groups
 sign.go.split <- sign.go %>%
   left_join(ec2go, by = "GO") %>%
@@ -82,45 +77,68 @@ names(sign.go.split) <- paste("Cluster", names(sign.go.split))
 
 # Building Venn diagram
 venn <- sign.go.split %>%
-  map("descrfc") %>%
-ggVennDiagram(color = "white", label = "count")
+  map("descrfc")
+venn.ord <- c(2,1,3)
+venn <- Venn(venn[venn.ord])
+data <- process_data(venn)
 
-# Detecting geoms
-venn.geoms <- map(venn$layers, "geom") %>%
-  map_chr(function(x) class(x)[1])
-
-poly.layer <- which(venn.geoms == "GeomPolygon")
-text.layer <- which(venn.geoms == "GeomText")
-label.layer <- which(venn.geoms == "GeomLabel")
+# Defining base colors (the same used 
+# throughout the paper)
+venn.labs <- venn_setlabel(data)$name
+col <- ggsci::pal_npg()(10)[venn.ord]
+names(col) <- venn.labs
 
 # Assign mixed colors
-col <- venn$layers[[poly.layer]]$data$group %>%
-  unique() %>%
-  set_names() %>%
-  strsplit("") %>%
+col <- venn_region(data)$name %>%
+  strsplit("\\.\\.") %>%
   map(function(x) {
     res <- mixCol(col[x])
-    setNames(res, NULL)
-    }) %>%
+    setNames(res, paste(x, collapse = ".."))
+  }) %>%
   unlist()
 
-# Venn diagram customizations
-venn$layers[[text.layer]]$aes_params$size <- 2.8
-venn$layers[[text.layer]]$aes_params$fontface <- "plain"
-
-venn$layers[[label.layer]]$aes_params$alpha <- 0
-venn$layers[[label.layer]]$aes_params$size <- 2.8
-
-venn$layers[[poly.layer]]$mapping <- aes(group=group, fill=group)
-# venn$layers[[poly.layer]]$data <- venn$layers[[2]]$data %>%
-#   mutate(group = fct_relevel(group, "A", "B", "C"))
-
-# Final plot
-venn <- venn + 
+# Overall plot
+venn.plot <- ggplot() +
+  # 1. region count layer
+  geom_sf(aes(fill = name), data = venn_region(data), show.legend = FALSE) +
+  # 2. set edge layer
+  geom_sf(color = "white", data = venn_setedge(data), show.legend = FALSE) +
+  # 3. set label layer
+  geom_sf_text(aes(label = name), data = venn_setlabel(data)) +
+  # 4. region label layer
+  geom_sf_text(aes(label = count), data = venn_region(data)) +
+  # 5. fill scale
   scale_fill_manual(values = col) +
   myTheme +
   theme_void(base_size = 8, base_family = f.family) +
-  theme(legend.position = "none")
+  coord_sf(clip = "off")
+
+# Cluster plot
+venns <- venn_region(data)$name %>%
+  set_names() %>%
+  map_df(function(clust){
+    d <- venn_region(data)
+    d$name[d$name != clust] <- NA
+    d
+}, .id = "panel")
+
+# Define order of clusters and format data accordingly
+cluster.order <- venn_region(data)$name
+cluster.order <- c(cluster.order[2], cluster.order[-2])
+venns <- venns %>%
+  mutate(across(panel, fct_relevel, cluster.order))
+
+# Build final plot
+venns <- ggplot() +
+  geom_sf(aes(fill = name), data = venns, show.legend = FALSE) +
+  geom_sf(color = "white", data = venn_setedge(data), show.legend = FALSE) +
+  scale_fill_manual(values = col, na.value = "gray90") +
+  facet_grid(panel ~ .) +
+  myTheme +
+  theme_void(base_size = 8, base_family = f.family) +
+  theme(strip.background = element_blank(),
+        strip.text = element_blank())
+  
 
 # Size of clusters (number of unique GO terms)
 bars <- sign.go.split %>%
@@ -136,14 +154,14 @@ ggplot(aes(x = size, y = group)) +
   theme(panel.grid.major.y = element_blank(),
         legend.position = "none",
         axis.title.y = element_blank()) +
-  ggsci::scale_fill_npg() +
+  scale_fill_manual(values = col) +
   xlab("N° of GO terms")
 
 
 # Get venn groups
-venn.grp <- venn$layers[[poly.layer]]$data %>%
-  dplyr::select(group, count) %>%
-  unique()
+venn.grp <- venn_region(data) %>%
+  as.data.frame() %>%
+  dplyr::select(group = name, count)
 
 # Top GO (based on enrichment fold change)
 top_go <- bind_rows(sign.go.split) %>%
@@ -169,7 +187,7 @@ top_go <- bind_rows(sign.go.split) %>%
   arrange(abs(y)) %>%
   # Fine tuning factor order
   mutate_at("descrfc", fct_inorder) %>%
-  mutate_at("group", fct_relevel, "ABC", after = Inf) %>%
+  mutate_at("group", fct_relevel, cluster.order, after = Inf) %>%
 ggplot(aes(x = descrfc, y = y)) +
   geom_errorbar(aes(ymin = ymin, ymax = ymax), size = .3,
                 width = .5) +
@@ -184,29 +202,9 @@ ggplot(aes(x = descrfc, y = y)) +
         axis.title.y = element_blank()) +
   ylab("Fold-change enrichment (log2)")
 
-# Use venn diagram groups as facet label
-venns <- unserialize(serialize(venn, NULL))
-venns$layers <- venns$layers[poly.layer]
-venns$layers[[1]]$data <- top_go$data$group %>% 
-  map_df(function(l){
-    venns$layers[[1]]$data %>%
-      mutate(group.col = ifelse(group == l, as.character(group), NA),
-             panel = l)
-  })
-venns$layers[[1]]$mapping <- aes(group = group, fill = group.col)
-
-# Multipanel venns coloring only the selected
-# group (we could re-use the plot for the heatmap)
-venns <- venns + 
-  scale_fill_manual(values = col, na.value="gray90") +
-  facet_wrap(~ panel, ncol = 1) +
-  theme(strip.background = element_blank(),
-        strip.text = element_blank())
-
-# Building final plot
-top_venn <- top_go + 
-  (venns + theme(panel.spacing.y = unit(2, "lines"))) +
-  plot_layout(widths = c(2,1))
+# Additional plot
+top_venn <- top_go + venns +
+  plot_layout(widths = c(1,.5))
 
 
 ##### Plot enriched genes #####
@@ -247,7 +245,12 @@ collapsed <- collapsed %>%
 relabel <- function(x){
   i <- strsplit(x, ",")
   sapply(i, function(y){
-    paste(LETTERS[as.numeric(y)], collapse = "")
+    clust <- paste("Cluster", y)
+    c2 <- grep("Cluster 2", clust)
+    if(length(c2) > 0 && c2 > 1){
+      clust <- c(clust[c2], clust[-c2])
+    }
+    paste(clust, collapse = "..")
   })
 }
 
@@ -257,7 +260,7 @@ collapsed <- collapsed %>%
   ungroup() %>%
   mutate(descr = fct_reorder(descr, mfc, .fun = mean, .desc = T),
          group.go = fct_relabel(group.go, relabel),
-         group.go = fct_relevel(group.go, levels(venns$layers[[1]]$data$panel)))
+         group.go = fct_relevel(group.go, cluster.order))
 
 # HeatMap of copy_numbers after 
 # hierarchical clustering based on kendall
@@ -317,10 +320,11 @@ count.terms <- collapsed %>%
   dplyr::count()
 
 mat <- matrix(nrow = nrow(count.terms), ncol = 3)
-for(i in 1:3){
-  l <- LETTERS[i]
-  rows <- grep(l, as.character(count.terms$group.go))
-  mat[rows, i] <- "X"
+main.clust <- paste("Cluster", 1:3)
+for(i in main.clust){
+  rows <- grep(i, as.character(count.terms$group.go))
+  col <- grep(i, main.clust)
+  mat[rows, col] <- "X"
 }
 mat[is.na(mat)] <- ""
 mat <- data.frame(mat, count.terms[,-1])
@@ -346,7 +350,7 @@ names(totals) <- names(mat)
 for(i in 4:5){
   totals[[i]] <- as.numeric(totals[[i]])
 }
-table.s8 <- rbind(mat, totals)
+table.s9 <- rbind(mat, totals)
 
 # Fold change bars
 fc_bars <- collapsed %>%
@@ -372,7 +376,7 @@ fc_bars <- collapsed %>%
 # Copy venn diagrams to match only cluster 1, 2, and 3
 venns.main <- unserialize(serialize(venns, NULL))
 venns.main$layers[[1]]$data <- venns.main$layers[[1]]$data %>%
-  filter(panel %in% c("A", "B", "C"))
+  filter(panel %in% main.clust)
 venns.main <- venns.main + facet_wrap(~ panel, nrow = 1) 
 
 
@@ -400,7 +404,7 @@ figure.s8 <- (venns.main + theme(panel.spacing.x = unit(4, "lines"))) +
   (fc_bars + labs(tag = "d")) + 
   (venns + theme(panel.spacing.y = unit(1, "lines"))) +
   (bars + labs(tag = "a")) + 
-  (venn + coord_equal(clip = "off") + labs(tag = "b")) +
+  (venn.plot + labs(tag = "b")) +
   plot_layout(design = layout) &
   theme(plot.tag = element_text(vjust = -3, face = "bold", 
                                 size = myTheme$text$size + 1))

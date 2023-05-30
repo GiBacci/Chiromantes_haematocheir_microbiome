@@ -260,7 +260,7 @@ div <- getDiversityIndexes(otu_table(exp),
 # Formatting table S3
 table.s3 <- div %>%
   arrange(env, site) %>%
-  select(ID = sample.id, 
+  dplyr::select(ID = sample.id, 
          `Sample type` = env, 
          Site = site,
          `Number of ASVs`=Number_of_OTUs,
@@ -308,7 +308,7 @@ table.1 <- c("env", "site") %>% # Once for sample type and once for sites
            Effect == lag(Effect) ~ "",
            T ~ Effect
          )) %>%
-  select(-site) %>%
+  dplyr::select(-site) %>%
   mutate(Effect = case_when(
     Effect == "env" ~ "Sample type",
     Effect == "site" ~ "Site",
@@ -347,60 +347,58 @@ all.alpha.plots <- c("env", "site") %>%
     # or site
     contrasts <- if(f == "env"){
       contrasts %>% 
-        map(~pairwise.wilcox.test(.$qD, .$env, p.adjust.method = "BH"))
+        map(~pairwise.wilcox.test(.$qD, .$env, p.adjust.method = "BH", exact = FALSE))
     }else{
       contrasts %>% 
-        map(~pairwise.wilcox.test(.$qD, .$site, p.adjust.method = "BH"))
+        map(~pairwise.wilcox.test(.$qD, .$site, p.adjust.method = "BH", exact = FALSE))
     }
     
-    # Get significant letters
-    letters <- contrasts %>%
-      map(broom::tidy) %>%
-      map(unite, "name", group1, group2, sep = "-") %>%
-      map(deframe) %>%
-      map(multcompView::multcompLetters) %>%
-      map("Letters") %>%
-      map_df(enframe, name = f, value = "label", 
-             .id = "amplicon")
-    
-    letters <- obs %>%
-      group_by_at(c("amplicon", f)) %>%
-      summarise_at(c("qD", "qD.LCL", "qD.UCL"), mean) %>%
-      ungroup() %>%
-      left_join(letters, by = c("amplicon", f))
-    
     # Plot contrasts divided by amplicon type
-    c("16S", "ITS") %>%
+    plots <- c("16S", "ITS") %>%
       set_names() %>%
       map(function(amp){
-        cntr <- letters %>%
+        d <- obs %>%
           filter(amplicon == amp) %>%
           mutate_at(f, ~fct_reorder(., qD, .fun = "mean", .desc = T))
-        
-        obs %>%
-          filter(amplicon == amp) %>%
-          mutate_at(f, ~fct_reorder(., qD, .fun = "mean", .desc = T)) %>%
-          ggplot(aes_string(x = f, y = "qD", fill = f)) +
-          geom_errorbar(data = cntr, aes(y = qD, ymin = qD.LCL, ymax = qD.UCL),
-                        width = .3, size = .25, show.legend = F) +
+        ggplot(d, aes_string(x = f, y = "qD", fill = f)) +
+          stat_summary(geom = "errorbar", fun.data = mean_sd, width = .3, 
+                       linewidth = .25) +
           stat_summary(geom = "col", fun = mean, show.legend = F) +
-          geom_text(data = cntr, aes(y = qD.UCL, label = label), 
-                    vjust = -1, size = myTheme$text$size / .pt) +
           myTheme +
           scale_y_continuous(expand = expansion(mult = c(0, 0.2))) +
           scale_fill_manual(values = col) +
-          theme(axis.title.x = element_blank(),
-                axis.title.y = element_blank())
+          xlab("Sample type") +
+          ylab("Inverse Simpson index") + 
+          coord_cartesian(ylim = c(0, NA))
       })
+    list(plots = plots, contrasts = contrasts)
   })
+
+formatPmatrix <- function(x, target, type){
+  p <- as.vector(x)
+  d <- data.frame(
+    `Group 1` = rep(rownames(x), ncol(x)),
+    `Group 2` = rep(colnames(x), each = nrow(x)),
+    `Q-value` = p,
+    check.names = FALSE,
+    check.rows = FALSE
+  )
+  d <- d[!is.na(p),]
+  p <- p[!is.na(p)]
+  target <- c(target, rep("", nrow(d)-1))
+  type <- c(type, rep("", nrow(d)-1))
+  sign <- ifelse(p < 0.05, ifelse(p < 0.01, "**", "*"), "")
+  cbind(Target = target, Type = type, d, Sign = sign)
+}
+
 
 # Saving the final plot (Figure 2):
 #  panels a and c : difference based on 16S counts
 #  panels b and d : difference based on ITS counts
 layout <- "AAAABB
            CCCCDD"
-figure.2 <- c.all$env$`16S` + all.alpha.plots$env$`16S` + 
-  c.all$env$`ITS` + all.alpha.plots$env$`ITS` +
+figure.2 <- c.all$env$`16S` + all.alpha.plots$env$plots$`16S` + 
+  c.all$env$`ITS` + all.alpha.plots$env$plots$`ITS` +
   plot_layout(guides = "collect", design = layout) +
   plot_annotation(tag_levels = "a") &
   theme(legend.position = "bottom",
@@ -411,8 +409,8 @@ figure.2 <- c.all$env$`16S` + all.alpha.plots$env$`16S` +
         plot.background = element_blank())
 
 # Figure S3
-figure.s3 <- c.all$site$`16S` + all.alpha.plots$site$`16S` + 
-  c.all$site$`ITS` + all.alpha.plots$site$`ITS` +
+figure.s3 <- c.all$site$`16S` + {all.alpha.plots$site$plots$`16S` + xlab("Sites")} + 
+  c.all$site$`ITS` + {all.alpha.plots$site$plots$`ITS` + xlab("Sites")} +
   plot_layout(guides = "collect", design = layout) +
   plot_annotation(tag_levels = "a") &
   theme(legend.position = "bottom",
@@ -421,6 +419,15 @@ figure.s3 <- c.all$site$`16S` + all.alpha.plots$site$`16S` +
                                 size = myTheme$text$size + 1),
         plot.margin = unit(c(0,.1,0,.1), "lines"),
         plot.background = element_blank())
+
+# Building table S4
+table.s4 <- rbind(
+  formatPmatrix(all.alpha.plots$env$contrasts$`16S`$p.value, "16S", "Sample types"),
+  formatPmatrix(all.alpha.plots$site$contrasts$`16S`$p.value, "", "Sites"),
+  NA,
+  formatPmatrix(all.alpha.plots$env$contrasts$`ITS`$p.value, "ITS", "Sample types"),
+  formatPmatrix(all.alpha.plots$site$contrasts$`ITS`$p.value, "", "Sites")
+)
 
 
 # ---- betaDiversity ------------------------------------------
@@ -483,14 +490,14 @@ b.disp <- exp.rel %>%
   }) 
 
 # ANOVA table for beta dispersion
-table.s5 <- b.disp %>%
+table.s6 <- b.disp %>%
   map_df(function(x) {
     map(x, anova) %>%
       map_df(broom::tidy, .id = "Effect")
   }, .id = "data") %>%
   separateVar() %>%
   filter(term == "Groups") %>%
-  select(-term) %>%
+  dplyr::select(-term) %>%
   mutate(type = case_when(
     type == "biotic" ~ "Crab's organs",
     type == "abiotic" ~ "Environmental samples",
@@ -502,7 +509,7 @@ table.s5 <- b.disp %>%
   )) %>%
   mutate(p.value = sprintf("%.3f%s", p.value, 
                            symnum(p.value, c(0,0.01,0.05,1), c("**", "*", "")))) %>%
-  select(amplicon, type, Effect, p.value) %>%
+  dplyr::select(amplicon, type, Effect, p.value) %>%
   spread(Effect, p.value) %>%
   mutate(amplicon = case_when(
     amplicon == lag(amplicon) ~ "",
@@ -579,6 +586,61 @@ plot_pcoa <- function(pcoas, grp){
           panel.spacing.y = unit(.7, "lines"))
 }
 
+# PCoA on the same panel
+get_pcoa2 <- function(x, meta, ...){
+  d <- vegdist(x, ...)
+  cmds <- cmdscale(d, eig = TRUE)
+  
+  eig <- cmds$eig
+  eig <- {eig/sum(eig)}[1:2] * 100
+  points <- setNames(
+    data.frame(cmds$point),
+    c("PCoA1", "PCoA2")
+  )
+  labs <- sprintf("%s (%.1f%%)", colnames(points), eig)
+  meta <- meta[rownames(points),]
+  
+  ord <- cbind(points, meta)
+  
+  ord %>%
+    mutate(across(type, fct_recode, 
+                  `Crab's organs` = "biotic",
+                  `Environmental samples` = "abiotic")) %>%
+  ggplot(aes(x = PCoA1, y = PCoA2)) +
+    geom_hline(yintercept = 0, linetype = 1, linewidth = .15) +
+    geom_vline(xintercept = 0, linetype = 1, linewidth = .15) +
+    geom_point(aes(fill = env, shape = site), color = "white") +
+    stat_ellipse(aes(group = type, color = type), type = "t", level = .95,
+                 linetype = 2, size = .3) +
+    scale_shape_manual(values = c(21, 22, 23)) +
+    myTheme +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.major.y = element_blank(),
+          legend.title = element_blank()) +
+    guides(fill = guide_legend(override.aes = list(shape = 21, size = 3),
+                               ncol = 2),
+           shape = guide_legend(override.aes = list(color = "black")),
+           color = guide_legend(ncol = 1)) +
+    scale_fill_npg() +
+    scale_color_grey() +
+    xlab(labs[1]) +
+    ylab(labs[2])
+}
+
+# Split experiment by amplicon type
+exp.superdom <- splitBy(exp, taxa = "superdom", both = F, keep.zeroes = F)
+
+# Performing PCoA
+cmds <- exp.superdom %>%
+  map(filter_taxa, flist = function(x) sum(sign(x)) > 1, prune = TRUE) %>%
+  map(transform_sample_counts, fun = function(x) x / sum(x)) %>%
+  map(otu_table) %>%
+  map(as, "matrix") %>%
+  map(get_pcoa2, meta = sample_data(exp), 
+      method = "bray", binary = FALSE)
+
+
+# No more included
 # PCoA main text
 a <- plot_pcoa(ords.data, "env")
 # PCoA SM
@@ -586,7 +648,7 @@ a.supp <- plot_pcoa(ords.data, "site")
 
 
 # Better to make a table with results instead of a plot
-table.s4 <- permanova %>%
+table.s5 <- permanova %>%
   mutate(Effect = case_when(
     Effect == "env" ~ "Sample type",
     Effect == "site" ~ "Site",
@@ -602,7 +664,7 @@ table.s4 <- permanova %>%
                        c("**", "*", ""), na = F)) %>%
   filter(Effect != "Total") %>%
   mutate(R2 = sprintf("%.3f%s", R2, sign)) %>%
-  select(amplicon, type, Effect, R2) %>%
+  dplyr::select(amplicon, type, Effect, R2) %>%
   spread(Effect, R2, fill = "-") %>%
   mutate(amplicon = case_when(
     amplicon == lag(amplicon) ~ "",
@@ -642,11 +704,12 @@ b <- permanova.pair %>%
   mutate(R2 = ifelse(p.adjusted < 0.05, R2, NA),
          group1.b = ifelse(amplicon == "ITS", group2, group1),
          group2 = ifelse(amplicon == "ITS", group1, group2)) %>%
-  select(-group1) %>%
+  dplyr::select(-group1) %>%
   dplyr::rename(group1=group1.b) %>%
   split(.$Effect) %>%
   map(function(d){
     max <- ifelse("GI" %in% pull(d, group1), 4, 3)
+    r.limits <- c(0, 0.25)
     ggplot(d, aes(x = group1, y = group2, fill = R2)) +
       geom_point(shape = 21, aes(size = R2)) +
       annotate(geom = "segment", x = 1, y = 1, xend = max, yend = max,
@@ -658,7 +721,8 @@ b <- permanova.pair %>%
       facet_wrap(~ type, scales = "free", labeller = labeller(type = labelFrmt)) +
       myTheme +
       coord_cartesian(clip = "off") +
-      scale_fill_distiller(palette = "RdYlBu") +
+      scale_fill_distiller(palette = "RdYlBu", limits = r.limits) +
+      scale_size_continuous(limits = r.limits) +
       theme(panel.grid.major.x = element_blank(),
             panel.grid.major.y = element_blank(),
             panel.border = element_blank(),
@@ -672,17 +736,29 @@ b <- permanova.pair %>%
              size = guide_legend(title = bquote(PERMANOVA~R^2)))
   })
 
+# Both included in figure S4
 # Picking plots
 b.supp <- b$site
 b <- b$env
 
+
 # Saving using cowplot to avoid unwanted alignements
 # generate dby patchwork
 lab.size <- myTheme$text$size + 1
-figure.3 <- plot_grid(a, b, ncol = 1, rel_heights = c(2,1), 
-                      labels = c("a", "b"), label_size = lab.size)
-figure.s4 <- plot_grid(a.supp, b.supp, ncol = 1, rel_heights = c(2,1), 
-                           labels = c("a", "b"), label_size = lab.size)
+# figure.3 <- plot_grid(a, b, ncol = 1, rel_heights = c(2,1), 
+#                       labels = c("a", "b"), label_size = lab.size)
+# figure.s4 <- plot_grid(b, b.supp, ncol = 1, labels = c("a", "b"), label_size = lab.size)
+# Building figure 3
+figure.3 <- {cmds$`16S` / cmds$`ITS`} + 
+  plot_annotation(tag_levels = "a") +
+  plot_layout(guides = 'collect') &
+  theme(legend.position = "bottom",
+        plot.tag = element_text(face = "bold", size = lab.size))
+figure.s4 <- b / b.supp + 
+  plot_annotation(tag_levels = "a") +
+  plot_layout(guides = 'collect') &
+  theme(plot.tag = element_text(face = "bold", size = lab.size))
+
 
 # ---- commonASVs ------------------------------
 
@@ -696,9 +772,8 @@ upsets <- exp.upset %>%
   map(function(e){
     # Intersections of 2nd degree only (for 
     # sample type)
-    inters <- sample_data(e) %>%
-      pull(env) %>% unique() %>%
-      as.character() %>%
+    inters <- get_variable(e, "env") %>%
+      levels() %>%
       (function(x) {
         res <- combn(x, m = 2, simplify = F)
         append(res, x)
@@ -709,20 +784,41 @@ upsets <- exp.upset %>%
       otu_table() %>% t() %>% sign() %>%
       as("matrix") %>% data.frame()
     
+    # Metadata for matrix annotations
+    meta.env <- sample_data(e) %>%
+      as("data.frame") %>%
+      dplyr::select(env, type) %>%
+      unique()
+    
+    # Build matrix annotation
+    matrixByEnv <- list(data = meta.env, 
+         plots = list(
+           list(type = "matrix_rows", 
+                column = "type", 
+                colors = c(biotic = "mediumseagreen", 
+                           abiotic = "royalblue3"), 
+                alpha = 0.6)
+           )
+         )
+    
     # Building dataset for sites
     bySites <- merge_samples(e, "site") %>%
       otu_table() %>% t() %>% sign() %>%
       as("matrix") %>% data.frame()
     
     list(
-      bySites = upset(bySites, nsets = 3, show.numbers = "no"),
+      bySites = upset(bySites, nsets = 3, show.numbers = "no",
+                      point.size = 1.2, line.size = .4,
+                      keep.order = T),
       byEnv = upset(byEnv, nsets = 8, intersections = inters,
-                    show.numbers = "no")
+                    show.numbers = "no", set.metadata = matrixByEnv,
+                    point.size = 1.2, line.size = .4,
+                    keep.order = T)
     )
   })
 
 # Building final plot and saving
-figure.s5 <- upsets %>%
+figure.4 <- upsets %>%
   map2(seq_along(upsets), function(x, i){
     plots <- map(x, function(y){
       plot_grid(y$Main_bar, y$Matrix, ncol = 1,
@@ -738,3 +834,72 @@ figure.s5 <- upsets %>%
               labels = labs)
   }) %>%
   plot_grid(plotlist = ., ncol = 1)
+
+
+# Get percentage of genera detected in each
+# group (env)
+core <- exp.superdom %>%
+  map(collapseBy, by = "genus", taxa = TRUE) %>%
+  map(collapseBy, by = "env", 
+      FUN = function(x) sum(sign(x)) / length(x)) %>%
+  map(otu_table) %>%
+  map(t) 
+
+# Define cutoffs
+cutoffs <- seq(0, 1, 0.1)
+# Get the percentage of genera present
+# in (at least) all cutoffs
+core <- core %>%
+  map(apply, 2, function(x){
+    vapply(cutoffs, function(cutoff) 
+      sum(x >= cutoff) / length(x), 
+      FUN.VALUE = numeric(1))
+  }) 
+
+# Building dataset for plotting
+lvl <- get_variable(exp, "env") %>%
+  levels()
+core <- core %>%
+  map(cbind, cutoffs) %>%
+  map(as.data.frame) %>%
+  map_df(pivot_longer, cols = -cutoffs, 
+         names_to = "env", values_to = "perc",
+         .id = "superdom")
+
+soft.core <- core[core$cutoffs >= 0.7 & core$cutoffs < 0.8,] %>%
+  mutate(type = case_when(
+    env %in% c("MG", "HG", "GO", "GI") ~ "Crab's organs",
+    T ~ "Environmental samples"
+  ))
+
+# Data frame with single values
+single.cores <- soft.core %>%
+  dplyr::select(superdom, env, perc) %>%
+  pivot_wider(names_from = env,
+              values_from = perc)
+  
+# Labels to be added to the plot
+labs <- soft.core %>%
+  group_by(superdom, type) %>%
+  summarise(range = paste(
+    sprintf("%.2f%%", c(range(perc) * 100)), 
+    collapse = " - ")) %>%
+  transmute(lab = paste(type, range, sep = ": "),
+            x = 67,
+            y = c(93, 100))
+
+# Building figure S5
+figure.s5 <- core %>%
+  mutate(across(env, fct_relevel, lvl)) %>%
+ggplot(aes(x = cutoffs * 100, y = perc * 100, color = env)) +
+  geom_vline(xintercept = 70, linetype = 2, size = .3) +
+  geom_line() +
+  geom_point(shape = 21, fill = "white") +
+  geom_text(data = labs, aes(label = lab, x= x, y = y),
+            inherit.aes = FALSE, hjust = 1, size = 2) +
+  facet_wrap(. ~ superdom) +
+  scale_color_npg() +
+  myTheme +
+  theme(legend.title = element_blank()) +
+  xlab("Persistence in groups (%)") +
+  ylab("Genera in groups (%)")

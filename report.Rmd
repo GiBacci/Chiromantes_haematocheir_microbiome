@@ -144,39 +144,47 @@ knitr::read_chunk("scripts/geneEnrichment.R")
 
 # Figures
 
-```{r Figure_2, fig.width=5, fig.height=4}
-ggsave("Figures/Figure_2.pdf", figure.2, width = 5, height = 4, useDingbats = F)
+```{r Figure_2, fig.width=5.2, fig.height=4}
+ggsave("Figures/Figure_2.pdf", figure.2, width = 5.2, height = 4, useDingbats = F)
 figure.2
 ```
 
-__Figure 2: Microbial diversity in crab’s tissues and environmental samples.__ The average of the inverse Simpson index was reported with increasing sampling effort for all types of samples. Interpolated and extrapolated diversity was reported in panel a and c (16S rRNA gene and ITS1 region, respectively), whereas observed diversity was reported in panel b and d (16S rRNA gene and ITS1 region respectively). Significant differences in microbial diversity (Wilcoxon non-parametric test) were reported using lowercase letters (panel b and d) whereas colours and acronyms on the x-axis correspond to different sample types (MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris). If two means were significantly different, all letters on top of the two boxes must be different; if two means were equal, at least one letter must be the same.
+__Figure 2: Microbial diversity in crab’s organs and environmental samples.__ The average of the inverse Simpson index was reported with increasing sampling effort for all types of samples. Interpolated and extrapolated diversity was reported in panel a and c (16S rRNA gene and ITS1 region, respectively) together with the 98% confidence limits of diversity (iNEXT package). Observed diversity was reported in panel b and d (16S rRNA gene and ITS1 region respectively) with error bars representing the standard deviation of the observed values of diversity. Significant differences in microbial diversity (Wilcoxon non-parametric test) were reported using lowercase letters (panel b and d) whereas colours and acronyms on the x-axis correspond to different sample types (MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris).
 
 <br>
 
-```{r Figure_3, fig.width=3.95, fig.height=5.83}
-ggsave("Figures/Figure_3.pdf", figure.3, width = 3.95, height = 5.83, useDingbats = F)
+```{r Figure_3, fig.width=3.95, fig.height=5}
+ggsave("Figures/Figure_3.pdf", figure.3, width = 3.95, height = 5, useDingbats = F)
 figure.3
 ```
 
-__Figure 3: Microbial distribution according to Bray-Curtis distance.__ a) Principal coordinates analyses on Bray-Curtis distances inferred form 16S rRNA and ITS1 metabarcoding. Environmental samples and crab’s tissues (top side of the panels) were reported separately as distribution obtained with the two markers reported (right side of each panel). The variance of the objects along each axis has been reported between squared brackets (from the lowest to the highest) and different sample types were reported using different colors (MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris). b) Permutational analysis of variance on ordinations reported in panel a. For each pair of tissues and environmental samples a permutational analysis of variance was performed. R-squared values of significant contrasts were reported for both 16S (upper triangle) and ITS (lower triangle) counts.
+__Figure 3: Microbial distribution according to Bray-Curtis distance.__ Principal coordinates analyses on Bray-Curtis distances inferred form 16S rRNA (panel a) and ITS1 metabarcoding (panel b). The percentage of variance explained by each axis was reported between round brackets whereas different sample types were reported using different colors (MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris). Sample collected from different sites were reported by using different shapes (SH, Shui Hau; SK, Sai Keng; TKP, To Kwa Peng) whereas the 95% confidence intervals of the distribution of environmental samples (dark gray ellipse) and crab's organs (light gray ellipse) were reported by using dotted lines assuming a multivariate t-distribution.
 
 <br>
 
-```{r Figure_4, fig.width=3.94, fig.height=5.9}
-ggsave("Figures/Figure_4.pdf", figure.4, width = 3.94, height = 5.9, useDingbats = F)
+```{r Figure_4, fig.width=5.9, fig.height=4}
+ggsave("Figures/Figure_4.pdf", figure.s5, width = 5.9, height = 5.9, useDingbats = F)
 figure.4
 ```
 
-__Figure 4: Sequence variant clustering according to their abundance along sample types.__ Amplicon sequence variants reporting a different abundance pattern in one or more sample types (loglikelihood ratio test of DESeq2) were clustered according to their mean variance-stabilized abundance. Abundance values were reported using different colours after clustering based on Kendall correlation (right side of the plot). Clusters were coloured according to the scheme reported in the legend whereas removed clusters (namely those composed with less than 15 variants) where reported in black. Sequence variants inferred from ITS1 amplicon sequencing were reported using a solid dot.
+__Figure 4: Number of ASVs shared across sampling sites and sample types.__ The number of ASVs in common (namely simultaneously detected with abundance higher than zero) between different sets was reported following the upset representation. This representation is conceptually similar to a Venn diagram but intersections are reported as a matrix instead of using different shapes depending on the number fo sets, which become very complex to understand with more than three or four sets. Panels a and b report the number of shared ASVs obtained from 16s rRNA amplicon sequencing whereas panels b and d report those obtained form ITS1 sequencing. Set intersections were displayed in a matrix layout where each row is a different site (panels a and c) or sample type (panels b and d) and each column corresponds to a different intersection. In panels b and d the rows of the matrix were colored according to the sample type: green for crab's organs and blue for environmental samples.  Intersected sets are reported using points connected by a straight line. The number of ASVs contained in each intersection is reported using bars on top of the intersection considered. Intersections are mutually exclusive so that if an ASV is present in a given intersection it is excluded from the others. Sites and sample types were abbreviated as follows: TKP, To Kwa Peng; SK, Sai Keng; SH, Shui Hau; MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris.
 
-<br>
 
-```{r Figure_5, fig.width=7.1, fig.height=8}
-ggsave("Figures/Figure_5.pdf", figure.5, width = 7.1, height = 8, useDingbats = F)
+```{r Figure_5, fig.width=3.94, fig.height=5.9}
+ggsave("Figures/Figure_5.pdf", figure.4, width = 3.94, height = 5.9, useDingbats = F)
 figure.5
 ```
 
-__Figure 5: Taxonomic enrichment in clusters.__ a) Scaled variance-stabilized counts were tested for differences along sample types within all clusters detected. A pairwise Wilcoxon test was performed, and results were reported highlighting significant differences with one asterisk (p-value < 0.05) or two (p-value < 0.01). A complete overview of significant differences was reported in Figure S7. b) Sunburst plot of taxa significantly enrichment in clusters. Sector dimension is proportional to the number of ASVs detected whereas colours correspond to different clusters following the same colour scale in panel a. Taxa significantly enriched in more than one cluster were coloured using a striped pattern (as reported in the legend). Taxonomic ranks from the innermost circle (Kingdom level) to the leafs were reported in the legend. Leafs represent the most specific level at which a given variant has been classified, namely genus level for 16S rRNA amplicons (Bacteria and Archaea) and species level for ITS1 region amplicons (Fungi).
+__Figure 5: Sequence variant clustering according to their abundance along sample types.__ Amplicon sequence variants reporting a different abundance pattern in one or more sample types (loglikelihood ratio test of DESeq2) were clustered according to their mean variance-stabilized abundance. Abundance values were reported using different colours after clustering based on Kendall correlation (right side of the plot). Clusters were coloured according to the scheme reported in the legend whereas removed clusters (namely those composed with less than 15 variants) where reported in black. Sequence variants inferred from ITS1 amplicon sequencing were reported using a solid dot.
+
+<br>
+
+```{r Figure_6, fig.width=7.1, fig.height=8}
+ggsave("Figures/Figure_6.pdf", figure.6, width = 7.1, height = 8, useDingbats = F)
+figure.6
+```
+
+__Figure 6: Taxonomic enrichment in clusters.__ a) Scaled variance-stabilized counts were tested for differences along sample types within all clusters detected. A pairwise Wilcoxon test was performed, and results were reported highlighting significant differences with one asterisk (p-value < 0.05) or two (p-value < 0.01). A complete overview of significant differences was reported in Figure S7. b) Sunburst plot of taxa significantly enrichment in clusters. Sector dimension is proportional to the number of ASVs detected whereas colours correspond to different clusters following the same colour scale in panel a. Taxa significantly enriched in more than one cluster were coloured using a striped pattern (as reported in the legend). Taxonomic ranks from the innermost circle (Kingdom level) to the leafs were reported in the legend. Leafs represent the most specific level at which a given variant has been classified, namely genus level for 16S rRNA amplicons (Bacteria and Archaea) and species level for ITS1 region amplicons (Fungi).
 
 # Tables
 
@@ -214,25 +222,25 @@ ggsave("Figures/Figure_S3.pdf", figure.s3, width = 3.8, height = 3.8, useDingbat
 figure.s3
 ```
 
-__Figure S3: Microbial diversity in different sampling sites.__ The average of the inverse Simpson index was reported with increasing sampling effort for all sampling sites (SH, Shui Hau; SK, Sai Keng; TKP, To Kwa Peng). Interpolated and extrapolated diversity was reported in panel a and c (16S rRNA gene and ITS1 region, respectively), whereas observed diversity was reported in panel b and d (16S rRNA gene and ITS1 region respectively). Significant differences in microbial diversity (Wilcoxon non-parametric test) were reported using lowercase letters (panel b and d) whereas colors and acronyms on the x-axis correspond to different sample sites. If two means were significantly different, all letters on top of the two boxes must be different; if two means were equal, at least one letter must be the same.
+__Figure S3: Microbial diversity in different sampling sites.__ The average of the inverse Simpson index was reported with increasing sampling effort for all sampling sites (SH, Shui Hau; SK, Sai Keng; TKP, To Kwa Peng). Interpolated and extrapolated diversity was reported in panel a and c (16S rRNA gene and ITS1 region, respectively) together with the 98% confidence limits of diversity (iNEXT package) together with the 98% confidence limits of diversity (iNEXT package). Observed diversity was reported in panel b and d (16S rRNA gene and ITS1 region respectively) with error bars representing the standard deviation of the observed values of diversity. Significant differences in microbial diversity (Wilcoxon non-parametric test) were reported using lowercase letters (panel b and d) whereas colours and acronyms on the x-axis correspond to different sample sites.
 
 <br>
 
-```{r Figure_S4, fig.width=3.95, fig.height=5.83}
-ggsave("Figures/Figure_S4.pdf", figure.s4, width = 3.95, height = 5.83, useDingbats = F)
+```{r Figure_S4, fig.width=3.9, fig.height=3.6}
+ggsave("Figures/Figure_S4.pdf", figure.s4, width = 3.9, height = 3.6, useDingbats = F)
 figure.s4
 ```
 
-__Figure S4: Microbial distribution according to Bray-Curtis distance.__ a) Principal coordinates analyses on Bray-Curtis distances inferred form 16S rRNA and ITS1 metabarcoding. Environmental samples and crab’s organs (top side of the panels) were reported separately as distribution obtained with the two markers reported (right side of each panel). The variance of the objects along each axis has been reported between squared brackets (from the lowest to the highest) and different sample types were reported using different colors (TKP, To Kwa Peng; SK, Sai Keng; SH, Shui Hau). b) Permutational analysis of variance on ordinations reported in panel a. For each pair of organs and environmental samples a permutational analysis of variance was performed. R-squared values of significant contrasts were reported for both 16S (upper triangle) and ITS (lower triangle) counts.
+__Figure S4: Microbial distribution according to Bray-Curtis distance.__ Permutational analysis of variance (PERMANOVA) on ordinations reported in Figure 3. A permutational analysis was performed for each pair of organs and environmental samples (panel a) and for each sampling site (panel b). R-squared values of significant contrasts were reported for both 16S (upper triangle) and ITS (lower triangle) counts.
 
 <br>
 
-```{r Figure_S5, fig.width=5.9, fig.height=5.9}
-ggsave("Figures/Figure_S5.pdf", figure.s5, width = 5.9, height = 5.9, useDingbats = F)
+```{r Figure_S5, fig.width=5.5, fig.height=3}
+ggsave("Figures/Figure_S5.pdf", figure.s5, width = 5.5, height = 3, useDingbats = F)
 figure.s5
 ```
 
-__Figure S5: Number of ASVs shared across sampling sites and sample types.__ The number of ASVs in common (namely simultaneously detected with abundance higher than zero) between different sets was reported following the upset representation. This representation is conceptually similar to a Venn diagram but intersections are reported as a matrix instead of using different shapes depending on the number fo sets, which become very complex to understand with more than three or four sets. Panels a and b report the number of shared ASVs obtained from 16s rRNA amplicon sequencing whereas panels b and d report those obtained form ITS1 sequencing. Set intersections were displayed in a matrix layout where each row is a different site (panels a and c) or sample type (panels b and d) and each column corresponds to a different intersection. Intersected sets are reported using points connected by a straight line. The number of ASVs contained in each intersection is reported using bars on top of the intersection considered. Intersections are mutually exclusive so that if an ASV is present in a given intersection it is excluded from the others. Sites and sample types were abbreviated as follows: TKP, To Kwa Peng; SK, Sai Keng; SH, Shui Hau; MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris.
+__Figure S5: Persistence of genera detected in different groups.__ The percentage of genera detected in each group (both crab's organs and environmental samples) was plotted against increasing persistence (namely the percentage of samples in which a specific genus have an abundance higher than one). The percentage of genera composing a "soft-core" microbiome (70% of samples with abundance higher than one) was reported in the top part of each panel according to the type of samples considered (crab's organs or environmental samples). The type of amplicon used (16S rRNA gene or ITS-1 region) was reported on the top of each panel. Sample types were abbreviated as follows: MG, midgut; HG, hindgut; GO, gonads; GI, gills; L, litter; S, soil; W, water; WD, water debris.
 
 <br>
 
@@ -290,7 +298,7 @@ write_excel_csv(table.s3, "Tables/Table_S3.csv")
 
 <br>
 
-__Table S4: Variance explained by crab, sample type, and sampling site computer with permutational multivariate analysis of variance (PERMANOVA).__ The variance explained by each factor (also called R squared) was reported separately for 16S and ITS1 amplicons. The type columns reports if the PERMANOVA was computed on crab's samples (midgut, hindgut, gills, and gonads) or on environmental samples (litter, soil, water, and water debris). The crab was included in the model to account for variability across different animals collected. Asterisks were used to report significance based on p-values (\*, p-value < 0.05; \*\* p-value < 0.01). The proportion of variance unexplained by the factor considered was reported in the Residual column.
+__Table S4: Wilcoxon test on alpha diversity.__ Results of pairwise Wilcoxon test on crab's organs and environmental samples. P-values were corrected by using the "Benjamini-Hochberg" method also known as "False Discovery Rate" (FDR). Target, the target used for metabarcoding analyses; Type, the type of samples (if crab's organs and environmental samples or sampling sites); Group 1, the first group tested; Group 2, the second group tested; Q-value, the adjusted P-value.
 
 ```{r Table_S4, results='asis'}
 # Saving tables
@@ -301,10 +309,10 @@ knitr::kable(table.s4)
 
 <br>
 
-__Table S5: Analysis of variance (ANOVA) on euclidean distances around centroids.__ The homogeneity of dispersion across groups was tested using ANOVA on euclidean distances from group centroids. P-values were reported in the table using asterisks to report statistical significance (\*, p-value < 0.05; \*\* p-value < 0.01).
+__Table S5: Variance explained by crab, sample type, and sampling site computer with permutational multivariate analysis of variance (PERMANOVA).__ The variance explained by each factor (also called R squared) was reported separately for 16S and ITS1 amplicons. The type columns reports if the PERMANOVA was computed on crab's samples (midgut, hindgut, gills, and gonads) or on environmental samples (litter, soil, water, and water debris). The crab was included in the model to account for variability across different animals collected. Asterisks were used to report significance based on p-values (\*, p-value < 0.05; \*\* p-value < 0.01). The proportion of variance unexplained by the factor considered was reported in the Residual column.
 
 ```{r Table_S5, results='asis'}
-# saving table
+# Saving tables
 write_excel_csv(table.s5, "Tables/Table_S5.csv")
 
 knitr::kable(table.s5)
@@ -312,15 +320,18 @@ knitr::kable(table.s5)
 
 <br>
 
-__Table S6: Results of the likelihood ratio test (LRT) on sequence variants in different sample types.__ All columns returned from the LRT were reported even if the "log2FoldChange" column is not representative of a given contrast in this type of test. Columns are: asv, the name of the ASV tested; baseMean, the mean overall abundance of the each ASV tested; log2FoldChange, the logarithm of the ratio between two levels of the factor considered (since in LRT no contrast is provided, this column is not directly associated with the actual hypothesis test); lfcSE, the standard error of the log2FoldChange; stat, the difference in deviance between the reduced model and the full model; pvalue, the pvalue obtained by comparing stat to a chi-squared distribution; padj, adjusted p-values using the Benjamini–Hochberg method.
+__Table S6: Analysis of variance (ANOVA) on euclidean distances around centroids.__ The homogeneity of dispersion across groups was tested using ANOVA on euclidean distances from group centroids. P-values were reported in the table using asterisks to report statistical significance (\*, p-value < 0.05; \*\* p-value < 0.01).
 
 ```{r Table_S6, results='asis'}
-write_excel_csv(table.s6, file = "Tables/Table_S6.csv")
+# saving table
+write_excel_csv(table.s6, "Tables/Table_S6.csv")
+
+knitr::kable(table.s6)
 ```
 
 <br>
 
-__Table S7: Taxa enriched/depleted in the clusters defined base on LRT test.__ Columns report the number of ASVs found in the group of interest and in the whole community as used in the hypergeometric test. In details: Amplicon, the amplified amplicon used for barcoding (16S stands form 16S rRNA gene V3-V4 regions and ITS stands for the ITS1 region); Level, taxonomic level considered; Taxon, the name of the taxon tested; Cluster, the cluster in which the enrichment/depletion was tested; x, the number of ASVs assigned to the taxon considered in the cluster of interest; k, the number of ASVs in the cluster considered; n, the number of ASVs outside the cluster; m, the number of ASVs assigned to the given taxon in the whole community; p_obs, the probability of having an ASVs assigned to the taxon of interest in the cluster; p_exp, the probability of having an ASVs assigned to the taxon of interest in the community; log2.fold.enrichment, $log_{2}$ of the ratio between p_obs and p_exp; p.value, the p value; adj.p.value, p value adjusted following the Benjamini–Hochberg method.
+__Table S7: Results of the likelihood ratio test (LRT) on sequence variants in different sample types.__ All columns returned from the LRT were reported even if the "log2FoldChange" column is not representative of a given contrast in this type of test. Columns are: asv, the name of the ASV tested; baseMean, the mean overall abundance of the each ASV tested; log2FoldChange, the logarithm of the ratio between two levels of the factor considered (since in LRT no contrast is provided, this column is not directly associated with the actual hypothesis test); lfcSE, the standard error of the log2FoldChange; stat, the difference in deviance between the reduced model and the full model; pvalue, the pvalue obtained by comparing stat to a chi-squared distribution; padj, adjusted p-values using the Benjamini–Hochberg method.
 
 ```{r Table_S7, results='asis'}
 write_excel_csv(table.s7, file = "Tables/Table_S7.csv")
@@ -328,18 +339,26 @@ write_excel_csv(table.s7, file = "Tables/Table_S7.csv")
 
 <br>
 
-__Table S8: Number of shared GO terms between clusters.__ Columns C1, C2, and C3 represent the ASV groups (C1, cluster 1; C2, cluster 2; C3, cluster 3), if an "X" is present then GO terms are included in the group. The number of GO terms enriched/depleted in each group is reported in the last two columns. The total number of terms detected in the inferred genomes of ASVs assigned to each cluster was marked with "Tot" and reported in the last three rows of the table.
+__Table S8: Taxa enriched/depleted in the clusters defined base on LRT test.__ Columns report the number of ASVs found in the group of interest and in the whole community as used in the hypergeometric test. In details: Amplicon, the amplified amplicon used for barcoding (16S stands form 16S rRNA gene V3-V4 regions and ITS stands for the ITS1 region); Level, taxonomic level considered; Taxon, the name of the taxon tested; Cluster, the cluster in which the enrichment/depletion was tested; x, the number of ASVs assigned to the taxon considered in the cluster of interest; k, the number of ASVs in the cluster considered; n, the number of ASVs outside the cluster; m, the number of ASVs assigned to the given taxon in the whole community; p_obs, the probability of having an ASVs assigned to the taxon of interest in the cluster; p_exp, the probability of having an ASVs assigned to the taxon of interest in the community; log2.fold.enrichment, $log_{2}$ of the ratio between p_obs and p_exp; p.value, the p value; adj.p.value, p value adjusted following the Benjamini–Hochberg method.
 
 ```{r Table_S8, results='asis'}
 write_excel_csv(table.s8, file = "Tables/Table_S8.csv")
-
-knitr::kable(table.s8)
 ```
 
 <br>
 
-__Table S9: Gene ontology terms enriched/depleted in ASV clusters.__ Columns report the number of genes found in the inferred genome of ASVs included in the group of interest as well as in the whole community as used in the hypergeometric test. Values were weighted using the inferred copy number as obtained by PICRUSt2 ("genome_function_count"). Columns correspond to: GO, gene ontology term; Cluster, the group of ASVs considered; x, the number of genes classified with the GO term reported in the cluster of interest; k, the number of GO terms in the cluster considered; n, the number of GO terms outside the cluster; m, the number of GO term detected in the inferred genome of the ASVs in the whole community; p_obs, the probability of having a gene assigned to the GO term of interest in the ASV cluster; p_exp, the probability of having a gene assigned to the GO term of interest in the whole community; log2.fold.enrichment, log~2~ of the ratio between p_obs and p_exp; p.value, the p value; adj.p.value, p value adjusted following the Benjamini–Hochberg method.
+__Table S9: Number of shared GO terms between clusters.__ Columns C1, C2, and C3 represent the ASV groups (C1, cluster 1; C2, cluster 2; C3, cluster 3), if an "X" is present then GO terms are included in the group. The number of GO terms enriched/depleted in each group is reported in the last two columns. The total number of terms detected in the inferred genomes of ASVs assigned to each cluster was marked with "Tot" and reported in the last three rows of the table.
 
 ```{r Table_S9, results='asis'}
 write_excel_csv(table.s9, file = "Tables/Table_S9.csv")
+
+knitr::kable(table.s9)
+```
+
+<br>
+
+__Table S10: Gene ontology terms enriched/depleted in ASV clusters.__ Columns report the number of genes found in the inferred genome of ASVs included in the group of interest as well as in the whole community as used in the hypergeometric test. Values were weighted using the inferred copy number as obtained by PICRUSt2 ("genome_function_count"). Columns correspond to: GO, gene ontology term; Cluster, the group of ASVs considered; x, the number of genes classified with the GO term reported in the cluster of interest; k, the number of GO terms in the cluster considered; n, the number of GO terms outside the cluster; m, the number of GO term detected in the inferred genome of the ASVs in the whole community; p_obs, the probability of having a gene assigned to the GO term of interest in the ASV cluster; p_exp, the probability of having a gene assigned to the GO term of interest in the whole community; log2.fold.enrichment, log~2~ of the ratio between p_obs and p_exp; p.value, the p value; adj.p.value, p value adjusted following the Benjamini–Hochberg method.
+
+```{r Table_S10, results='asis'}
+write_excel_csv(table.s10, file = "Tables/Table_S10.csv")
 ```

@@ -63,7 +63,7 @@ labs <- disp.est %>%
 
 # Plot dispersions
 disp.all <- disp.est %>%
-  select(baseMean, dispGeneEst, dispersion, dispFit, dispOutlier, fitType) %>%
+  dplyr::select(baseMean, dispGeneEst, dispersion, dispFit, dispOutlier, fitType) %>%
   pivot_longer(c(-baseMean, -fitType, -dispOutlier),  names_to = "type") %>%
   mutate(type = fct_recode(type, 
                            final = "dispersion",
@@ -122,7 +122,7 @@ if(!file.exists(out)){
 }else{
   envs <- readRDS(out)
 }
-table.s6 <- results(envs, alpha = 0.05) %>%
+table.s7 <- results(envs, alpha = 0.05) %>%
   as("data.frame") %>%
   rownames_to_column("asv")
 
@@ -218,11 +218,14 @@ col <- c("black", pal_npg()(10)[1:(nrow(groups)) - 1])
 names(col) <- pull(groups, subtree)
 
 # Plotting with heatmap
+p$data$x <- ifelse(p$data$x > 0, 0, p$data$x)
 p <- p + aes(color=subtree) +
-  geom_treescale(x=0.1, y=230, offset = 2, 
+  geom_treescale(x=min(p$data$x) + .1, 
+                 y=max(p$data$y) - 10, 
+                 offset = 2,
                  family = "sans", fontsize = 3,
                  width = .2)
-figure.4 <- gheatmap(p %<+% group, t(means), color = NA,
+figure.5 <- gheatmap(p %<+% group, t(means), color = NA,
                        colnames_offset_y = -4,
                        offset = .04,
                        width = .5,
@@ -281,7 +284,7 @@ compareGroups <- function(data, value, grp){
     gather("B", "p", -A) %>%
     filter(!is.na(p)) %>%
     mutate(name = paste(A,B, sep = "-")) %>%
-    select(name, p) %>%
+    dplyr::select(name, p) %>%
     deframe()
   
   # Setting contrasts evaluation
@@ -358,7 +361,7 @@ a <- ggplot(data, aes(x = env, y = value)) +
 
 ord <- data %>% pull(env) %>% levels()
 b <- test %>%
-  select(-value, -label, -type) %>%
+  dplyr::select(-value, -label, -type) %>%
   gather("env.2", "p", -cluster.lab, -env) %>%
   filter(!is.na(p)) %>%
   mutate(sign = case_when(
@@ -496,7 +499,7 @@ enrich <- as.list(t.table)[-1] %>%
     
   }, .id = "tax.lvl")
 
-table.s7 <- enrich %>% 
+table.s8 <- enrich %>% 
   dplyr::rename(
     "Level" = "tax.lvl",
     "Cluster" = "grp",
@@ -506,18 +509,18 @@ table.s7 <- enrich %>%
     "p_exp" = "fraction.pop",
     "Amplicon" = "superdom"
   ) %>%
-  select(-exp.q) %>%
-  select(Amplicon, Level, Taxon, Cluster, x, k, n, m, p_obs, 
+  dplyr::select(-exp.q) %>%
+  dplyr::select(Amplicon, Level, Taxon, Cluster, x, k, n, m, p_obs, 
          p_exp, log2.fold.enrichment, p.value, adj.p.value)
 
 # ---- enrichmentPlots --------------------------
 data <- tax %>%
   filter(asv %in% asvs) %>%
-  select(-asv)
+  dplyr::select(-asv)
 
 # Removing taxa without significant enrichment
 data <- enrich %>%
-  select(tax.lvl, categories) %>%
+  dplyr::select(tax.lvl, categories) %>%
   unique() %>%
   apply(1, function(d){
     col.i <- which(names(data) == d[1])
@@ -567,7 +570,7 @@ correctLabels <- function(data, label){
 
 # Adding clusters
 res <- res.raw %>%
-  left_join(enrich %>% select(grp, categories), 
+  left_join(enrich %>% dplyr::select(grp, categories), 
             by = c("label" = "categories")) 
 
 # Interpolate colors if a taxa was
@@ -581,7 +584,7 @@ res <- res %>%
   unique()
 
 # Get color vector
-col <- na.omit(deframe(res %>% select(lab, col)))
+col <- na.omit(deframe(res %>% dplyr::select(lab, col)))
 col.names <- unique(names(col))
 col <- setNames(unique(col), col.names)
 
@@ -655,8 +658,8 @@ ggplot(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax)) +
                              title.position = "top"),
          label = guide_legend(title = NULL, nrow = 15, override.aes = list(fill = "transparent")))
 
-# Assembling figure 5
-figure.5 <- (a + theme(strip.text.x = element_text(angle = 90, hjust = 0))) + b +
+# Assembling figure 6
+figure.6 <- (a + theme(strip.text.x = element_text(angle = 90, hjust = 0))) + b +
   plot_layout(ncol = 2, widths = c(1, 4),
               guides = "collect") +
   plot_annotation(tag_levels = "a") & 

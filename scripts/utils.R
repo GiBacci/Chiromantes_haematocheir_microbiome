@@ -598,3 +598,117 @@ pairwise.adonis <- function(x,factors, sim.method, p.adjust.m, ...) {
   pairw.res = data.frame(pairs,F.Model,R2,p.value,p.adjusted)
   return(pairw.res)
 }
+
+
+collapseBy <- function(exp, by, taxa = FALSE, na.rm = TRUE, 
+                       FUN = sum, SAMP.FUN = mean){
+  # Collapse a phyloseq object based on sample variable or
+  # taxonomic rank
+  #
+  # Args:
+  #   exp: a phyloseq object
+  #   by: the name of the sample variable or the taxonomic rank
+  #   taxa: must be TRUE if `by` is a taxonomic rank
+  #   na.rm: if TRUE remove all NA values from `by` 
+  #          (useful if `by` is a taxonomic rank)
+  #   FUN: function that will be used to collapse ASVs counts
+  #   SAMP.FUN: function used to collapse numeric variables
+  #             (only used if `taxa` is FALSE)
+  #
+  # Returns:
+  #   A collapsed phyloseq object
+  
+  # Get counts
+  x <- otu_table(exp) |>
+    as("matrix")
+  
+  # Save the name of variable/taxonomic rank
+  by.name <- by
+  # Get by from sample data or tax table
+  # (accordint to `taxa` parameters)
+  by <- if(taxa){
+    x <- t(x)
+    tax_table(exp) |>
+      as("matrix") |>
+      (\(x){x[,by.name]})()
+  }else{
+    get_variable(exp, by.name)
+  }
+  
+  # Remove NA values if na.rm == TRUE
+  if(na.rm){
+    x <- x[!is.na(by),]
+    by <- by[!is.na(by)]
+  }
+  
+  # Collapse counts usign `FUN`
+  x <- apply(x, 2, function(i){
+    tapply(i, by, FUN = FUN)
+  })
+  
+  # Returning
+  if(taxa){
+    # Get tax table
+    tx <- tax_table(exp) |>
+      as("matrix")
+    # Order tax table according to collapsed
+    # taxa (the rownames of otu table at this time)
+    ord <- match(rownames(x), tx[,by.name])
+    index <- which(rank_names(exp) == by.name)
+    
+    # This should never happen
+    if(length(index) > 1){
+      stop("`by` must be the name of a single variable/taxonomic rank",
+           call. = FALSE)
+    }
+    
+    # Order tax table and change rownames
+    tx <- tx[ord, seq(1,index)]
+    rownames(tx) <- rownames(x)
+    
+    # Return phyloseq object
+    phyloseq(
+      otu_table(t(x), taxa_are_rows = FALSE),
+      sample_data(exp),
+      tax_table(tx)
+    )
+  }else{
+    # Get sample table
+    samp <- sample_data(exp) |>
+      as("data.frame") |>
+      as.list()
+    
+    # Collpase all variables this way:
+    # 1. If a variable is numeric, apply the SAMP.FUN
+    #    function per group
+    # 2. If a variable is not numeric tests if there is
+    #    only a single value per group
+    #    - If TRUE: return the single value obtained
+    #    - If FALSE: return NA
+    res <- lapply(samp, function(v){
+      if(is.numeric(v)){
+        # If numeric apply SAMP.FUN
+        tapply(v, by, SAMP.FUN)
+      }else{
+        # If not numeric try to get unique values
+        res <- tapply(v, by, unique, simplify = FALSE)
+        # If it contains only unique values per group
+        # return it
+        if(all(lengths(res) == 1)){
+          unlist(res)
+        }else{
+          # Otherwise return NA
+          rep(NA, length(res))
+        }
+      }
+    })
+    samp <- as.data.frame(res)
+    
+    # Return a phyloseq object
+    phyloseq(
+      otu_table(x, taxa_are_rows = FALSE),
+      sample_data(samp),
+      tax_table(exp)
+    )
+  }
+}
